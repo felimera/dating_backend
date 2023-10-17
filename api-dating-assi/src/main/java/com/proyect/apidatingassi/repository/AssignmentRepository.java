@@ -1,6 +1,6 @@
 package com.proyect.apidatingassi.repository;
 
-import org.hibernate.sql.ast.tree.update.Assignment;
+import com.proyect.apidatingassi.model.Assignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

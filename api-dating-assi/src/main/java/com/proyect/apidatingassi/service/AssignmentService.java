@@ -1,6 +1,6 @@
 package com.proyect.apidatingassi.service;
 
-import org.hibernate.sql.ast.tree.update.Assignment;
+import com.proyect.apidatingassi.model.Assignment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
