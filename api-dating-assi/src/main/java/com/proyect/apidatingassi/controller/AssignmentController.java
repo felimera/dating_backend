@@ -4,6 +4,7 @@ import com.proyect.apidatingassi.controller.dto.AssignmentDto;
 import com.proyect.apidatingassi.controller.mapper.AssignmentMapper;
 import com.proyect.apidatingassi.model.Assignment;
 import com.proyect.apidatingassi.service.AssignmentService;
+import com.proyect.apidatingassi.util.PreconditionsAssignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,9 @@ public class AssignmentController {
     AssignmentService assignmentService;
 
     @GetMapping(path = "/all")
-    public ResponseEntity<Object> getAll(@RequestParam(defaultValue = "0") int order) {
-        List<Assignment> assignmentList = assignmentService.getAll(order);
+    public ResponseEntity<Object> getAll(@RequestParam(defaultValue = "0") String order) {
+        PreconditionsAssignment.checkNullBodyField(order);
+        List<Assignment> assignmentList = assignmentService.getAll(Integer.parseInt(order));
         List<AssignmentDto> assignmentDtoList = assignmentList.stream().map(AssignmentMapper.INSTANCE::toDto).toList();
         return ResponseEntity.ok(assignmentDtoList);
     }
