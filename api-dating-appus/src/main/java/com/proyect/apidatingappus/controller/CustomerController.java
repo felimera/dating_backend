@@ -1,6 +1,5 @@
 package com.proyect.apidatingappus.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyect.apidatingappus.controller.dto.CustomerDto;
 import com.proyect.apidatingappus.controller.mapper.CustomerMapper;
 import com.proyect.apidatingappus.model.Customer;
@@ -19,8 +18,6 @@ import java.util.List;
 public class CustomerController {
     @Autowired
     CustomerService customerService;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @GetMapping(path = "/all")
     public ResponseEntity<Object> getAll() {
