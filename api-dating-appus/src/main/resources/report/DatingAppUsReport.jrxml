@@ -5,6 +5,12 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="titleReport" class="java.lang.String"/>
+	<field name="customerName" class="java.lang.String"/>
+	<field name="customerPhone" class="java.lang.String"/>
+	<field name="customerEmail" class="java.lang.String"/>
+	<field name="consultationDate" class="java.lang.String"/>
+	<field name="consultationTime" class="java.lang.String"/>
+	<field name="reportDate" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -15,16 +21,117 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<printWhenExpression><![CDATA[$F{titleReport}]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="18"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{titleReport}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="90" splitType="Stretch">
+			<textField>
+				<reportElement x="138" y="0" width="416" height="30" uuid="d360d331-e563-420f-a72a-92bc14732c7d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="138" height="30" uuid="3bb29ce5-b1f5-4e13-97d0-a4dd3ca5affd">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Customer name :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="138" y="30" width="138" height="30" uuid="08ac3d19-e6e8-4448-b0ef-bc113a889433">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{customerPhone}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="138" height="30" uuid="01fb9aff-8fed-42d5-aaad-8516845fd2f1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Customer's phone number :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="417" y="30" width="138" height="30" uuid="27029c74-5914-4d03-ae4f-90193f56b8ec">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{customerEmail}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="30" width="138" height="30" uuid="3cd8f76a-c6c4-4aaf-8918-90145bc9045f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Customer email :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="138" y="60" width="138" height="30" uuid="64936a9f-1ab7-485c-becc-a7ffe74abfc6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{consultationDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="138" height="30" uuid="3e91bd37-75e2-466e-8bb4-aa29a3cfe48f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Consultation date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="417" y="60" width="138" height="30" uuid="4e7a112a-5c4c-4b8e-bc76-454891721a14">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{consultationTime}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="60" width="138" height="30" uuid="a4e9affb-7d48-40e3-8591-1aee9b379d3f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Consultation time :]]></text>
+			</staticText>
+		</band>
+		<band height="50"/>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="30" uuid="b323d2fe-c97e-459d-81df-087c858b5f2c">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reportDate}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 </jasperReport>
