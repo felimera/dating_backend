@@ -6,6 +6,8 @@ import com.proyect.apidatingappus.model.entityReport.AssignmentTableReport;
 import com.proyect.apidatingappus.model.entityReport.DatingReport;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.report.DatingReportService;
+import com.proyect.apidatingappus.util.DateUtil;
+import com.proyect.apidatingappus.util.NumberUtils;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class DatingReportServiceImpl implements DatingReportService {
         datingReport.setTitleReport("Report of client services");
         datingReport.setConsultationDate(appointmentList.get(0).getDate().toString());
         datingReport.setConsultationTime(appointmentList.get(0).getTime());
-        datingReport.setReportDate(LocalDateTime.now().toString());
+        datingReport.setReportDate(DateUtil.getFormaterStringReport(LocalDateTime.now()));
         this.getDataClient(appointmentList.get(0).getCustomer(), datingReport);
 
         return datingReport;
@@ -45,7 +47,7 @@ public class DatingReportServiceImpl implements DatingReportService {
     private static List<AssignmentTableReport> getTableReportList(List<Appointment> appointmentList) {
         return appointmentList.stream()
                 .map(Appointment::getAssignment)
-                .map(assignment -> new AssignmentTableReport(assignment.getName(), assignment.getDescription(), String.valueOf(assignment.getPrice()))).toList();
+                .map(assignment -> new AssignmentTableReport(assignment.getName(), assignment.getDescription(), NumberUtils.getFormaterPrice(assignment.getPrice()))).toList();
     }
 
     private JasperPrint reportMain(long idCustomer) throws JRException {
