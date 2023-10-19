@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="DatingAppUsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20"
-              rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5097ff7-20df-42e2-99ac-2fb6175f7fb1">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DatingAppUsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5097ff7-20df-42e2-99ac-2fb6175f7fb1">
     <style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
         <box>
             <pen lineWidth="0.5" lineColor="#000000"/>
@@ -32,8 +28,7 @@
             <rightPen lineWidth="0.5" lineColor="#000000"/>
         </box>
     </style>
-    <style name="Style_Title" mode="Opaque" forecolor="#FAFAFC" backcolor="#3300FF" hTextAlign="Center"
-           vTextAlign="Middle" isBlankWhenNull="true" isBold="true">
+    <style name="Style_Title" mode="Opaque" forecolor="#FAFAFC" backcolor="#3300FF" hTextAlign="Center" vTextAlign="Middle" isBlankWhenNull="true" isBold="true">
         <pen lineStyle="Solid" lineColor="#3300FF"/>
     </style>
     <subDataset name="DatasetAssignment" uuid="80f4146a-cf17-4708-b537-0c639d8cbdef">
@@ -62,12 +57,11 @@
     <title>
         <band height="79" splitType="Stretch">
             <textField isBlankWhenNull="true">
-                <reportElement style="Style_Title" x="0" y="0" width="555" height="79" backcolor="#3300FF"
-                               uuid="bde1b84f-d194-49d0-a41b-e5e86e1b2295">
+                <reportElement style="Style_Title" x="0" y="0" width="555" height="79" backcolor="#3300FF" uuid="bde1b84f-d194-49d0-a41b-e5e86e1b2295">
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 </reportElement>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font size="20" isBold="true"/>
+                    <font size="30" isBold="true"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{titleReport}]]></textFieldExpression>
             </textField>
@@ -165,8 +159,7 @@
         <band height="80">
             <componentElement>
                 <reportElement x="0" y="0" width="555" height="80" uuid="8a9bf65e-321b-416b-8aed-387dc19cb21f">
-                    <property name="com.jaspersoft.studio.layout"
-                              value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
                     <property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
                     <property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
@@ -174,8 +167,7 @@
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 </reportElement>
-                <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
-                          xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+                <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
                     <datasetRun subDataset="DatasetAssignment" uuid="5f9478ab-00c8-44e5-adf1-d699a507dffb">
                         <dataSourceExpression><![CDATA[$P{tableReportList}]]></dataSourceExpression>
                     </datasetRun>
@@ -183,8 +175,7 @@
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
                         <jr:tableHeader style="Table_TH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="151" height="30"
-                                               uuid="6e1cf2ba-4c52-4975-8a2f-2a0daa1d8a1d"/>
+                                <reportElement x="0" y="0" width="151" height="30" uuid="6e1cf2ba-4c52-4975-8a2f-2a0daa1d8a1d"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="12" isBold="true"/>
                                 </textElement>
@@ -193,9 +184,12 @@
                         </jr:tableHeader>
                         <jr:detailCell style="Table_TD" height="30">
                             <textField isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="151" height="30"
-                                               uuid="71137232-78f3-49e8-95b0-7fd9fbbd22cb"/>
-                                <textElement verticalAlignment="Middle"/>
+                                <reportElement x="0" y="0" width="151" height="30" uuid="71137232-78f3-49e8-95b0-7fd9fbbd22cb">
+                                    <property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+                                </reportElement>
+                                <textElement verticalAlignment="Middle">
+                                    <paragraph leftIndent="5"/>
+                                </textElement>
                                 <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
@@ -204,8 +198,7 @@
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
                         <jr:tableHeader style="Table_TH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="249" height="30"
-                                               uuid="c0233156-ae61-408f-a605-dd1524f96d0c"/>
+                                <reportElement x="0" y="0" width="249" height="30" uuid="c0233156-ae61-408f-a605-dd1524f96d0c"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="12" isBold="true"/>
                                 </textElement>
@@ -214,9 +207,13 @@
                         </jr:tableHeader>
                         <jr:detailCell style="Table_TD" height="30">
                             <textField isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="249" height="30"
-                                               uuid="ddd1f093-0039-4ce3-bdcc-a6fa9ff607b2"/>
-                                <textElement verticalAlignment="Middle"/>
+                                <reportElement x="0" y="0" width="249" height="30" uuid="ddd1f093-0039-4ce3-bdcc-a6fa9ff607b2">
+                                    <property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+                                    <property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+                                </reportElement>
+                                <textElement verticalAlignment="Middle">
+                                    <paragraph leftIndent="5" rightIndent="5"/>
+                                </textElement>
                                 <textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
@@ -225,8 +222,7 @@
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
                         <jr:tableHeader style="Table_TH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="155" height="30"
-                                               uuid="45799832-b60e-419a-8430-8bc215c7cd2a"/>
+                                <reportElement x="0" y="0" width="155" height="30" uuid="45799832-b60e-419a-8430-8bc215c7cd2a"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="12" isBold="true"/>
                                 </textElement>
@@ -235,9 +231,12 @@
                         </jr:tableHeader>
                         <jr:detailCell style="Table_TD" height="30">
                             <textField isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="155" height="30"
-                                               uuid="e05f9d86-36a5-42c6-a63b-9fbed16e4fe8"/>
-                                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                                <reportElement x="0" y="0" width="155" height="30" uuid="e05f9d86-36a5-42c6-a63b-9fbed16e4fe8">
+                                    <property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+                                </reportElement>
+                                <textElement textAlignment="Right" verticalAlignment="Middle">
+                                    <paragraph rightIndent="5"/>
+                                </textElement>
                                 <textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
