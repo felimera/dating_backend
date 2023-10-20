@@ -9,6 +9,10 @@ import java.util.Objects;
 
 public class PreconditionsAppointment {
 
+    private PreconditionsAppointment() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void checkNullBodyField(AppointmentDto appointmentDto) {
         if (Objects.isNull(appointmentDto.getFecha()) || appointmentDto.getFecha().length() == 0) {
             throw new RequestException("402", "The purchase date cannot be empty or null.");

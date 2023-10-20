@@ -1,4 +1,4 @@
-package com.proyect.apidatingappus.model.entityReport;
+package com.proyect.apidatingappus.model.entityreport;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

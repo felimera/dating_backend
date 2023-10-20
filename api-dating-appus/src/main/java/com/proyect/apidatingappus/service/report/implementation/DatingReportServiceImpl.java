@@ -1,9 +1,10 @@
 package com.proyect.apidatingappus.service.report.implementation;
 
+import com.proyect.apidatingappus.exception.RequestException;
 import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.model.Customer;
-import com.proyect.apidatingappus.model.entityReport.AssignmentTableReport;
-import com.proyect.apidatingappus.model.entityReport.DatingReport;
+import com.proyect.apidatingappus.model.entityreport.AssignmentTableReport;
+import com.proyect.apidatingappus.model.entityreport.DatingReport;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.report.DatingReportService;
 import com.proyect.apidatingappus.util.DateUtil;
@@ -42,8 +43,8 @@ public class DatingReportServiceImpl implements DatingReportService {
         datingReport.setConsultationDate(appointmentList.get(0).getDate().toString());
         datingReport.setConsultationTime(appointmentList.get(0).getTime());
         datingReport.setReportDate(DateUtil.getFormaterStringReport(LocalDateTime.now()));
-        this.getDataClient(appointmentList.get(0).getCustomer(), datingReport);
-        datingReport.setTableReportList(new JRBeanCollectionDataSource(this.getTableReportList(appointmentList)));
+        getDataClient(appointmentList.get(0).getCustomer(), datingReport);
+        datingReport.setTableReportList(new JRBeanCollectionDataSource(getTableReportList(appointmentList)));
 
         return datingReport;
     }
@@ -60,9 +61,9 @@ public class DatingReportServiceImpl implements DatingReportService {
 
         List<Appointment> appointmentList = appointmentRepository.getAppointmentByIdCustomer(idCustomer);
         if (appointmentList.isEmpty())
-            throw new RuntimeException("The client ID does not exist.");
+            throw new RequestException("702","The client ID does not exist.");
 
-        DatingReport datingReport = this.getDatingReport(appointmentList);
+        DatingReport datingReport = getDatingReport(appointmentList);
         Map<String, Object> parameters = new HashMap<>();
         JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(Collections.singleton(datingReport));
         return JasperFillManager.fillReport(jasperReport, parameters, source);
@@ -70,7 +71,7 @@ public class DatingReportServiceImpl implements DatingReportService {
 
     @Override
     public byte[] exportToPdf(long idCustomer) throws JRException {
-        return JasperExportManager.exportReportToPdf(this.reportMain(idCustomer));
+        return JasperExportManager.exportReportToPdf(reportMain(idCustomer));
     }
 
     @Override

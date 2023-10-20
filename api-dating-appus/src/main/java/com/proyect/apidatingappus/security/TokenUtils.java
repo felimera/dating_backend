@@ -16,8 +16,8 @@ public class TokenUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    private final static String ACCESS_TOKEN_SECRET = "4ghqBLrEB†YcaRHxhdb9zURb2r†8e7Ud";
-    private final static Long ACCESS_TOKEN_VALIDITY_SECONDS = 2_592_000L;
+    private static final  String ACCESS_TOKEN_SECRET = "4ghqBLrEB†YcaRHxhdb9zURb2r†8e7Ud";
+    private static final  Long ACCESS_TOKEN_VALIDITY_SECONDS = 2_592_000L;
 
     public static String createToken(String nombre, String email) {
         long expirationTime = ACCESS_TOKEN_VALIDITY_SECONDS * 1000;

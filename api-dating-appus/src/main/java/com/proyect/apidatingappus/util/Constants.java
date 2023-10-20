@@ -1,6 +1,11 @@
 package com.proyect.apidatingappus.util;
 
 public class Constants {
+
+    private Constants() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static final String DATE_FORMAT = "dd/MM/yyyy";
     public static final String AUTHORIZATION = "Authorization";
     public static final String SPACE = " ";

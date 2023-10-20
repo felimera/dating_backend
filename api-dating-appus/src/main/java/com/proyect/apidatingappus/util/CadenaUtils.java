@@ -1,6 +1,9 @@
 package com.proyect.apidatingappus.util;
 
 public class CadenaUtils {
+    private CadenaUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static String toMayusculas(String valor) {
         if (valor == null || valor.isEmpty()) {

@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtil {
+    private DateUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static boolean isValidateFormatDate(String fecha) {
         try {

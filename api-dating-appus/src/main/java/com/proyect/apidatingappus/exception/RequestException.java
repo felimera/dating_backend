@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestException extends RuntimeException {
-    private String code;
+    private final String code;
 
     public RequestException(String code, String message) {
         super(message);
