@@ -30,8 +30,7 @@ public class DatingReportServiceImpl implements DatingReportService {
         datingReport.setCustomerEmail(customer.getEmail());
         datingReport.setCustomerPhone(customer.getPhone());
     }
-
-
+    
     private DatingReport getDatingReport(List<Appointment> appointmentList) {
 
         DatingReport datingReport = new DatingReport();
@@ -40,6 +39,7 @@ public class DatingReportServiceImpl implements DatingReportService {
         datingReport.setConsultationTime(appointmentList.get(0).getTime());
         datingReport.setReportDate(DateUtil.getFormaterStringReport(LocalDateTime.now()));
         this.getDataClient(appointmentList.get(0).getCustomer(), datingReport);
+        datingReport.setTableReportList(new JRBeanCollectionDataSource(this.getTableReportList(appointmentList)));
 
         return datingReport;
     }
@@ -60,8 +60,6 @@ public class DatingReportServiceImpl implements DatingReportService {
 
         DatingReport datingReport = this.getDatingReport(appointmentList);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("tableReportList", new JRBeanCollectionDataSource(this.getTableReportList(appointmentList)));
-
         JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(Collections.singleton(datingReport));
         return JasperFillManager.fillReport(jasperReport, parameters, source);
     }

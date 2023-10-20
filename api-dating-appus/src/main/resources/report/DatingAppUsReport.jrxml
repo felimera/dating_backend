@@ -40,7 +40,6 @@
         <field name="description" class="java.lang.String"/>
         <field name="value" class="java.lang.String"/>
     </subDataset>
-    <parameter name="tableReportList" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
     <queryString>
         <![CDATA[]]>
     </queryString>
@@ -51,6 +50,7 @@
     <field name="consultationDate" class="java.lang.String"/>
     <field name="consultationTime" class="java.lang.String"/>
     <field name="reportDate" class="java.lang.String"/>
+    <field name="tableReportList" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
     <background>
         <band splitType="Stretch"/>
     </background>
@@ -168,8 +168,8 @@
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 </reportElement>
                 <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-                    <datasetRun subDataset="DatasetAssignment" uuid="5f9478ab-00c8-44e5-adf1-d699a507dffb">
-                        <dataSourceExpression><![CDATA[$P{tableReportList}]]></dataSourceExpression>
+                    <datasetRun subDataset="DatasetAssignment" uuid="b946a6fa-162b-41fb-af15-1a1efdd5abfb">
+                        <dataSourceExpression><![CDATA[$F{tableReportList}]]></dataSourceExpression>
                     </datasetRun>
                     <jr:column width="151" uuid="d6a8e4e8-c39a-47e7-9530-eb02c54de34c">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
