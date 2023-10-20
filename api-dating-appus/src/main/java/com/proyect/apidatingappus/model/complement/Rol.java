@@ -1,4 +1,4 @@
-package com.proyect.apidatingappus.util;
+package com.proyect.apidatingappus.model.complement;
 
 import java.util.stream.Stream;
 

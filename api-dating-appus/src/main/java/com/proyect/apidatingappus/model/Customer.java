@@ -1,7 +1,7 @@
 package com.proyect.apidatingappus.model;
 
-import com.proyect.apidatingappus.util.Gender;
-import com.proyect.apidatingappus.util.Rol;
+import com.proyect.apidatingappus.model.complement.Gender;
+import com.proyect.apidatingappus.model.complement.Rol;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;

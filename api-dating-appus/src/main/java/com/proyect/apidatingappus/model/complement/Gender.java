@@ -1,4 +1,4 @@
-package com.proyect.apidatingappus.util;
+package com.proyect.apidatingappus.model.complement;
 
 import java.util.stream.Stream;
 
@@ -16,7 +16,7 @@ public enum Gender {
 
     public static Gender of(String gender) {
         return Stream.of(Gender.values())
-                .filter(p -> p.getName().equals( gender))
+                .filter(p -> p.getName().equals(gender))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
