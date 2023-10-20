@@ -10,9 +10,13 @@ import com.proyect.apidatingappus.util.DateUtil;
 import com.proyect.apidatingappus.util.NumberUtils;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -30,7 +34,7 @@ public class DatingReportServiceImpl implements DatingReportService {
         datingReport.setCustomerEmail(customer.getEmail());
         datingReport.setCustomerPhone(customer.getPhone());
     }
-    
+
     private DatingReport getDatingReport(List<Appointment> appointmentList) {
 
         DatingReport datingReport = new DatingReport();
@@ -67,5 +71,17 @@ public class DatingReportServiceImpl implements DatingReportService {
     @Override
     public byte[] exportToPdf(long idCustomer) throws JRException {
         return JasperExportManager.exportReportToPdf(this.reportMain(idCustomer));
+    }
+
+    @Override
+    public byte[] exportToXls(long idCustomer) throws JRException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        SimpleOutputStreamExporterOutput output = new SimpleOutputStreamExporterOutput(byteArrayOutputStream);
+        JRXlsExporter exporter = new JRXlsExporter();
+        exporter.setExporterInput(new SimpleExporterInput(reportMain(idCustomer)));
+        exporter.setExporterOutput(output);
+        exporter.exportReport();
+        output.close();
+        return byteArrayOutputStream.toByteArray();
     }
 }

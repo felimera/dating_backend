@@ -27,4 +27,9 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM', ' yyyy' del día' dd 'a las' hh:MM 'horas'.");
         return CadenaUtils.toMayusculas(localDateTime.format(formatter));
     }
+
+    public static String getExportFormaterDateReport(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'_'MM'_' dd'_'yyyy'_'hh:MM'_'");
+        return CadenaUtils.toMayusculas(localDateTime.format(formatter));
+    }
 }

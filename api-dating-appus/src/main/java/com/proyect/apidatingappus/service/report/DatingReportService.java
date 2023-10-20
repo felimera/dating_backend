@@ -4,4 +4,6 @@ import net.sf.jasperreports.engine.JRException;
 
 public interface DatingReportService {
     byte[] exportToPdf(long idCustomer) throws JRException;
+
+    byte[] exportToXls(long idCustomer) throws JRException;
 }
