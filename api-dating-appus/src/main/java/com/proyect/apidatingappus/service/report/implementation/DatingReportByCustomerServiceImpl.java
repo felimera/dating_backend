@@ -6,7 +6,7 @@ import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.model.entityreport.AssignmentTableReport;
 import com.proyect.apidatingappus.model.entityreport.DatingReport;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
-import com.proyect.apidatingappus.service.report.DatingReportService;
+import com.proyect.apidatingappus.service.report.DatingReportByCustomerService;
 import com.proyect.apidatingappus.util.DateUtil;
 import com.proyect.apidatingappus.util.NumberUtils;
 import net.sf.jasperreports.engine.*;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DatingReportServiceImpl implements DatingReportService {
+public class DatingReportByCustomerServiceImpl implements DatingReportByCustomerService {
     @Autowired
     AppointmentRepository appointmentRepository;
 

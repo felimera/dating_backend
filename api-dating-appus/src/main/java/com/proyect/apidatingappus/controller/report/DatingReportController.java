@@ -1,6 +1,6 @@
 package com.proyect.apidatingappus.controller.report;
 
-import com.proyect.apidatingappus.service.report.DatingReportService;
+import com.proyect.apidatingappus.service.report.DatingReportByCustomerService;
 import com.proyect.apidatingappus.util.Constants;
 import com.proyect.apidatingappus.util.DateUtil;
 import net.sf.jasperreports.engine.JRException;
@@ -21,14 +21,14 @@ import java.time.LocalDateTime;
 public class DatingReportController {
 
     @Autowired
-    DatingReportService datingReportService;
+    DatingReportByCustomerService datingReportByCustomerService;
 
     @GetMapping(path = "/pdf")
     public ResponseEntity<byte[]> exportToPdf(@RequestParam(name = "idCustomer") long idCustomer) throws JRException {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_PDF);
         httpHeaders.setContentDispositionFormData(Constants.NAME_REPORT, Constants.NAME_REPORT.concat(DateUtil.getExportFormaterDateReport(LocalDateTime.now())).concat(Constants.EXTENSION_PDF));
-        return ResponseEntity.ok().headers(httpHeaders).body(datingReportService.exportToPdf(idCustomer));
+        return ResponseEntity.ok().headers(httpHeaders).body(datingReportByCustomerService.exportToPdf(idCustomer));
     }
 
     @GetMapping(path = "/xls")
@@ -40,6 +40,6 @@ public class DatingReportController {
                 .filename(Constants.NAME_REPORT.concat(DateUtil.getExportFormaterDateReport(LocalDateTime.now())).concat(Constants.EXTENSION_XLS))
                 .build();
         httpHeaders.setContentDisposition(contentDisposition);
-        return ResponseEntity.ok().headers(httpHeaders).body(datingReportService.exportToXls(idCustomer));
+        return ResponseEntity.ok().headers(httpHeaders).body(datingReportByCustomerService.exportToXls(idCustomer));
     }
 }
