@@ -1,4 +1,4 @@
-package com.proyect.apidatingappus.util;
+package com.proyect.apidatingappus.exception.precondition;
 
 import com.proyect.apidatingappus.controller.dto.CustomerDto;
 import com.proyect.apidatingappus.exception.RequestException;

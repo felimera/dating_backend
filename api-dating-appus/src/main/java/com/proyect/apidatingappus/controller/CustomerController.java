@@ -2,9 +2,9 @@ package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.CustomerDto;
 import com.proyect.apidatingappus.controller.mapper.CustomerMapper;
+import com.proyect.apidatingappus.exception.precondition.PreconditionsCustomer;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.service.CustomerService;
-import com.proyect.apidatingappus.util.PreconditionsCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

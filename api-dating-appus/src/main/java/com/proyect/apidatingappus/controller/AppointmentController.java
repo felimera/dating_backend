@@ -2,9 +2,9 @@ package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.AppointmentDto;
 import com.proyect.apidatingappus.controller.mapper.AppointmentMapper;
+import com.proyect.apidatingappus.exception.precondition.PreconditionsAppointment;
 import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.service.AppointmentService;
-import com.proyect.apidatingappus.util.PreconditionsAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

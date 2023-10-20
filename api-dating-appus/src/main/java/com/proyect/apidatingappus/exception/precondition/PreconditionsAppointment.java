@@ -1,7 +1,9 @@
-package com.proyect.apidatingappus.util;
+package com.proyect.apidatingappus.exception.precondition;
 
 import com.proyect.apidatingappus.controller.dto.AppointmentDto;
 import com.proyect.apidatingappus.exception.RequestException;
+import com.proyect.apidatingappus.util.Constants;
+import com.proyect.apidatingappus.util.DateUtil;
 
 import java.util.Objects;
 
