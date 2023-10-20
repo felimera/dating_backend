@@ -29,7 +29,7 @@ public class DateUtil {
     }
 
     public static String getExportFormaterDateReport(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'_'MM'_' dd'_'yyyy'_'hh:MM'_'");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'_'MM'_' dd'_'yyyy'_'hh:MM:SS'_'");
         return CadenaUtils.toMayusculas(localDateTime.format(formatter));
     }
 }
