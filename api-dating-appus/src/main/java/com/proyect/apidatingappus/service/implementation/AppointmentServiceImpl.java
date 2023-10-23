@@ -27,12 +27,28 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findAll();
     }
 
+    private Appointment getAppointment(Appointment appointment, Long id) {
+        Appointment appoi = new Appointment();
+        appoi.setId(appointment.getId());
+        appoi.setTime(appointment.getTime());
+        appoi.setDate(appointment.getDate());
+        appoi.setTotalPrice(appointment.getTotalPrice());
+        appoi.setCustomer(appointment.getCustomer());
+
+        appoi.setAssignment(assignmentService.getById(id));
+        return appoi;
+    }
+
     @Override
-    public Appointment postAppointment(Appointment appointment) {
+    public Appointment postAppointment(Appointment appointment, List<Long> idList) {
         if (DateUtil.isValidateOldDate(appointment.getDate())) {
             throw new BusinessException("301", HttpStatus.CONFLICT, "The date must be greater than the current date.");
         }
-        return appointmentRepository.save(appointment);
+
+        List<Appointment> appointmentList = idList.stream().map(id -> getAppointment(appointment, id)).toList();
+        appointmentRepository.saveAll(appointmentList);
+
+        return appointment;
     }
 
     @Override

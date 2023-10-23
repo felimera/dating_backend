@@ -13,7 +13,7 @@ public class PreconditionsAppointment {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void checkNullBodyField(AppointmentDto appointmentDto) {
+    public static void checkNullBodyField(AppointmentDto appointmentDto,boolean isPost) {
         if (Objects.isNull(appointmentDto.getFecha()) || appointmentDto.getFecha().length() == 0) {
             throw new RequestException("402", "The purchase date cannot be empty or null.");
         }
@@ -26,8 +26,15 @@ public class PreconditionsAppointment {
         if (Objects.isNull(appointmentDto.getIdCustomer())) {
             throw new RequestException("402", "The client id cannot be empty or null.");
         }
-        if (Objects.isNull(appointmentDto.getIdAssignment())) {
-            throw new RequestException("402", "The service id cannot be empty or null.");
+        if(isPost) {
+            if (Objects.isNull(appointmentDto.getIdsAssignment()) || appointmentDto.getIdsAssignment().isEmpty()) {
+                throw new RequestException("402", "The service id cannot be empty or null.");
+            }
+        }
+        else {
+            if (Objects.isNull(appointmentDto.getIdAssignment()) ) {
+                throw new RequestException("402", "The service id cannot be empty or null.");
+            }
         }
 
         if (DateUtil.isValidateFormatDate(appointmentDto.getFecha())) {

@@ -30,14 +30,14 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<Object> postAppointment(@RequestBody AppointmentDto appointmentDto) {
-        PreconditionsAppointment.checkNullBodyField(appointmentDto);
-        Appointment appointment = appointmentService.postAppointment(AppointmentMapper.INSTANCE.toEntity(appointmentDto));
+        PreconditionsAppointment.checkNullBodyField(appointmentDto, Boolean.TRUE);
+        Appointment appointment = appointmentService.postAppointment(AppointmentMapper.INSTANCE.toEntity(appointmentDto), appointmentDto.getIdsAssignment());
         return ResponseEntity.status(HttpStatus.CREATED).body(AppointmentMapper.INSTANCE.toDto(appointment));
     }
 
     @PutMapping(value = "/{idAppointment}")
     public ResponseEntity<Object> putAppointment(@PathVariable(name = "idAppointment") Long idAppointment, @RequestBody AppointmentDto appointmentDto) {
-        PreconditionsAppointment.checkNullBodyField(appointmentDto);
+        PreconditionsAppointment.checkNullBodyField(appointmentDto, Boolean.FALSE);
         Appointment appointment = appointmentService.putAppointment(idAppointment, appointmentDto.getIdCustomer(), appointmentDto.getIdAssignment(), AppointmentMapper.INSTANCE.toEntity(appointmentDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(AppointmentMapper.INSTANCE.toDto(appointment));
     }
