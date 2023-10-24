@@ -1,14 +1,14 @@
-package com.proyect.apidatingappus.model.entityreport;
+package com.proyect.apidatingappus.controller.dto.entityreport;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class AssignmentTableReport {
+public class AssignmentTableReportDto {
+
     private String name;
     private String description;
     private String value;
+    private String totalPrice;
 }

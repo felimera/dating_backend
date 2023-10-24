@@ -3,7 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DatingAppUsReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5097ff7-20df-42e2-99ac-2fb6175f7fb1">
     <property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
     <property name="net.sf.jasperreports.export.xls.ignore.cell.background" value="false"/>
-    <style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+    <style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
         <box>
             <pen lineWidth="0.5" lineColor="#000000"/>
             <topPen lineWidth="0.5" lineColor="#000000"/>
@@ -41,6 +41,7 @@
         <field name="name" class="java.lang.String"/>
         <field name="description" class="java.lang.String"/>
         <field name="value" class="java.lang.String"/>
+        <field name="totalPrice" class="java.lang.String"/>
     </subDataset>
     <queryString>
         <![CDATA[]]>
@@ -168,9 +169,9 @@
                 <text><![CDATA[Consultation time :]]></text>
             </staticText>
         </band>
-        <band height="80">
+        <band height="111">
             <componentElement>
-                <reportElement x="0" y="0" width="555" height="80" uuid="8a9bf65e-321b-416b-8aed-387dc19cb21f">
+                <reportElement x="0" y="0" width="555" height="100" uuid="8a9bf65e-321b-416b-8aed-387dc19cb21f">
                     <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
                     <property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -243,6 +244,15 @@
                                 <text><![CDATA[Price]]></text>
                             </staticText>
                         </jr:tableHeader>
+                        <jr:tableFooter style="Table_TH" height="30" rowSpan="1">
+                            <textField>
+                                <reportElement x="0" y="0" width="155" height="30" uuid="ee7e23b1-8429-40ce-81dc-b5e2f951e88d"/>
+                                <textElement textAlignment="Right" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="12"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{totalPrice}!=null?$F{totalPrice}:""]]></textFieldExpression>
+                            </textField>
+                        </jr:tableFooter>
                         <jr:detailCell style="Table_TD" height="30">
                             <textField isBlankWhenNull="true">
                                 <reportElement x="0" y="0" width="155" height="30" uuid="e05f9d86-36a5-42c6-a63b-9fbed16e4fe8">
@@ -258,6 +268,14 @@
                     </jr:column>
                 </jr:table>
             </componentElement>
+            <line>
+                <reportElement positionType="Float" x="0" y="110" width="555" height="1" uuid="c2fbcd08-9ba5-4342-87a0-52a5bd50ebb2">
+                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                </reportElement>
+            </line>
         </band>
     </detail>
     <pageFooter>

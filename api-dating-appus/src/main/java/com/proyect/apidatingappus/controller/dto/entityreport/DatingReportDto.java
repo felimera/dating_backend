@@ -1,4 +1,4 @@
-package com.proyect.apidatingappus.model.entityreport;
+package com.proyect.apidatingappus.controller.dto.entityreport;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Getter
 @Setter
-public class DatingReport {
+public class DatingReportDto {
     private String titleReport;
     private String customerName;
     private String customerPhone;

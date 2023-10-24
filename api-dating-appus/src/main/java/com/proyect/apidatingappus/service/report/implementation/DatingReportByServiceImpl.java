@@ -3,9 +3,10 @@ package com.proyect.apidatingappus.service.report.implementation;
 import com.proyect.apidatingappus.controller.dto.ReportSearchParametersDto;
 import com.proyect.apidatingappus.exception.RequestException;
 import com.proyect.apidatingappus.model.Appointment;
+import com.proyect.apidatingappus.model.Assignment;
 import com.proyect.apidatingappus.model.Customer;
-import com.proyect.apidatingappus.model.entityreport.AssignmentTableReport;
-import com.proyect.apidatingappus.model.entityreport.DatingReport;
+import com.proyect.apidatingappus.controller.dto.entityreport.AssignmentTableReportDto;
+import com.proyect.apidatingappus.controller.dto.entityreport.DatingReportDto;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.report.DatingReportByService;
 import com.proyect.apidatingappus.util.DateUtil;
@@ -32,13 +33,13 @@ public class DatingReportByServiceImpl implements DatingReportByService {
     @Autowired
     AppointmentRepository appointmentRepository;
 
-    private static void getDataClient(Customer customer, DatingReport datingReport) {
-        datingReport.setCustomerName(customer.getFirtName() + " " + customer.getLastName());
-        datingReport.setCustomerEmail(customer.getEmail());
-        datingReport.setCustomerPhone(customer.getPhone());
+    private static void getDataClient(Customer customer, DatingReportDto datingReportDto) {
+        datingReportDto.setCustomerName(customer.getFirtName() + " " + customer.getLastName());
+        datingReportDto.setCustomerEmail(customer.getEmail());
+        datingReportDto.setCustomerPhone(customer.getPhone());
     }
 
-    private List<DatingReport> getDatingReportList(List<Appointment> appointmentList) {
+    private List<DatingReportDto> getDatingReportList(List<Appointment> appointmentList) {
 
         Map<LocalDate, List<Appointment>> appointmentListMap = appointmentList.stream().collect(Collectors.groupingBy(Appointment::getDate));
         return appointmentListMap
@@ -49,26 +50,35 @@ public class DatingReportByServiceImpl implements DatingReportByService {
                 .toList();
     }
 
-    private static DatingReport getDatingReport(Map.Entry<LocalDate, List<Appointment>> localDateListEntry) {
-        DatingReport datingReport = new DatingReport();
-        datingReport.setTitleReport("Report of client services");
-        datingReport.setConsultationDate(localDateListEntry.getValue().get(0).getDate().toString());
-        datingReport.setConsultationTime(localDateListEntry.getValue().get(0).getTime());
-        datingReport.setReportDate(DateUtil.getFormaterStringReport(LocalDateTime.now()));
-        getDataClient(localDateListEntry.getValue().get(0).getCustomer(), datingReport);
-        datingReport.setTableReportList(new JRBeanCollectionDataSource(getTableReportList(localDateListEntry.getValue())));
-        return datingReport;
+    private static DatingReportDto getDatingReport(Map.Entry<LocalDate, List<Appointment>> localDateListEntry) {
+        DatingReportDto datingReportDto = new DatingReportDto();
+        datingReportDto.setTitleReport("Report of client services");
+        datingReportDto.setConsultationDate(localDateListEntry.getValue().get(0).getDate().toString());
+        datingReportDto.setConsultationTime(localDateListEntry.getValue().get(0).getTime());
+        datingReportDto.setReportDate(DateUtil.getFormaterStringReport(LocalDateTime.now()));
+        getDataClient(localDateListEntry.getValue().get(0).getCustomer(), datingReportDto);
+        datingReportDto.setTableReportList(new JRBeanCollectionDataSource(getTableReportList(localDateListEntry.getValue())));
+        return datingReportDto;
     }
 
-    private static List<AssignmentTableReport> getTableReportList(List<Appointment> appointmentList) {
-        return appointmentList.stream()
+    private static List<AssignmentTableReportDto> getTableReportList(List<Appointment> appointmentList) {
+        return appointmentList
+                .stream()
                 .map(Appointment::getAssignment)
-                .map(assignment ->
-                        new AssignmentTableReport(
-                                assignment.getName(),
-                                assignment.getDescription(),
-                                NumberUtils.getFormaterPrice(assignment.getPrice())))
+                .map(assignment -> {
+                    AssignmentTableReportDto assignmentTableReportDto = getAssignmentTableReport(assignment);
+                    assignmentTableReportDto.setTotalPrice(NumberUtils.getFormaterPrice(appointmentList.get(0).getTotalPrice()));
+                    return assignmentTableReportDto;
+                })
                 .toList();
+    }
+
+    private static AssignmentTableReportDto getAssignmentTableReport(Assignment assignment) {
+        AssignmentTableReportDto assignmentTableReportDto = new AssignmentTableReportDto();
+        assignmentTableReportDto.setName(assignment.getName());
+        assignmentTableReportDto.setDescription(assignment.getDescription());
+        assignmentTableReportDto.setValue(NumberUtils.getFormaterPrice(assignment.getPrice()));
+        return assignmentTableReportDto;
     }
 
     private JasperPrint reportMain(ReportSearchParametersDto parametersDto) throws JRException {
@@ -79,9 +89,9 @@ public class DatingReportByServiceImpl implements DatingReportByService {
         if (appointmentList.isEmpty())
             throw new RequestException("702", "The client ID does not exist.");
 
-        List<DatingReport> datingReportList = getDatingReportList(appointmentList);
+        List<DatingReportDto> datingReportDtoList = getDatingReportList(appointmentList);
         Map<String, Object> parameters = new HashMap<>();
-        JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(datingReportList);
+        JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(datingReportDtoList);
         return JasperFillManager.fillReport(jasperReport, parameters, source);
     }
 
