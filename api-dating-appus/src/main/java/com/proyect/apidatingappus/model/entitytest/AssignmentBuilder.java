@@ -18,7 +18,7 @@ public class AssignmentBuilder {
                 .id(1L)
                 .name("Pelo regogido")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vulputate porta lacinia. Maecenas malesuada tempor augue vel consectetur. Mauris sed tellus et enim varius varius.")
-                .price(Long.getLong("125"))
+                .price(125L)
                 .build();
     }
 

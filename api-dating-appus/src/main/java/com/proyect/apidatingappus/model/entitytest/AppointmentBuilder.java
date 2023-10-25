@@ -23,7 +23,7 @@ public class AppointmentBuilder {
                 .id(1L)
                 .date(LocalDate.now().plusDays(1))
                 .time("12:00:00")
-                .totalPrice(Long.getLong("125"))
+                .totalPrice(125L)
                 .customer(null)
                 .assignment(null)
                 .build();
@@ -42,5 +42,10 @@ public class AppointmentBuilder {
     public Appointment toEditDate(LocalDate date) {
         AppointmentBuilder builder = toAppointmentBuilder();
         return new Appointment(builder.id, date, builder.time, builder.totalPrice, builder.customer, builder.assignment);
+    }
+
+    public Appointment toEditCustomerAndAssignment(Customer customer, Assignment assignment) {
+        AppointmentBuilder builder = toAppointmentBuilder();
+        return new Appointment(builder.id, builder.date, builder.time, builder.totalPrice, customer, assignment);
     }
 }
