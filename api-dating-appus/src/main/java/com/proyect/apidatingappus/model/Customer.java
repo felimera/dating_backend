@@ -4,7 +4,9 @@ import com.proyect.apidatingappus.model.complement.Gender;
 import com.proyect.apidatingappus.model.complement.Rol;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "customer")
 public class Customer {
     @Id
