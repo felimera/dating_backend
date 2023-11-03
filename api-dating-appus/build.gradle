@@ -28,10 +28,12 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // https://mvnrepository.com/artifact/com.vaadin.external.google/android-json
+    implementation group: 'com.vaadin.external.google', name: 'android-json', version: '0.0.20131108.vaadin1'
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
     implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.20.5'
     // https://mvnrepository.com/artifact/com.github.librepdf/openpdf
@@ -41,7 +43,6 @@ dependencies {
     implementation group: 'org.apache.poi', name: 'poi', version: '5.2.4'
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts
     implementation group: 'net.sf.jasperreports', name: 'jasperreports-fonts', version: '6.19.1'
-
 
 
     compileOnly 'org.projectlombok:lombok'

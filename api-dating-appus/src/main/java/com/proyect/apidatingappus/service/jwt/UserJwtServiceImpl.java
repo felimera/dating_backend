@@ -1,4 +1,4 @@
-package com.proyect.apidatingappus.security;
+package com.proyect.apidatingappus.service.jwt;
 
 import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.repository.UserRepository;
@@ -8,17 +8,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserJwtServiceImpl implements UserDetailsService {
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository
-                .findOneByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario con el email " + email + " no existe."));
-
-        return new UserDetailsImpl(user);
+        // Write logic to fetch user from DB
+        User entity = userRepository.findOneByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email : " + email));
+        return new org.springframework.security.core.userdetails.User(entity.getEmail(), entity.getPassword(), Collections.emptyList());
     }
 }
