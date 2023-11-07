@@ -39,4 +39,7 @@ public class Customer {
     private Gender gender;
     @Column(name = "cus_birthdate")
     private LocalDate birthdate;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cus_user_id")
+    private User user;
 }

@@ -29,13 +29,6 @@ public class CustomerController {
         return ResponseEntity.ok(customerDtoList);
     }
 
-    @PostMapping
-    public ResponseEntity<Object> postCustomer(@Validated @RequestBody CustomerDto customerDto) {
-        PreconditionsCustomer.checkNullBodyField(customerDto);
-        Customer customer = customerService.postCustomer(CustomerMapper.INSTANCE.toEntity(customerDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(CustomerMapper.INSTANCE.toDto(customer));
-    }
-
     @PutMapping(value = "/{idCustomer}")
     public ResponseEntity<Object> putCustomer(@PathVariable(name = "idCustomer") Long idCustomer, @Validated @RequestBody CustomerDto customerDto) {
         PreconditionsCustomer.checkNullBodyField(customerDto);

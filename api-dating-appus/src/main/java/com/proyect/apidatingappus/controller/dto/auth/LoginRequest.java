@@ -1,4 +1,4 @@
-package com.proyect.apidatingappus.controller.dto;
+package com.proyect.apidatingappus.controller.dto.auth;
 
 import lombok.Data;
 

@@ -1,7 +1,8 @@
 package com.proyect.apidatingappus.controller;
 
-import com.proyect.apidatingappus.controller.dto.LoginRequest;
-import com.proyect.apidatingappus.controller.dto.LoginResponse;
+import com.proyect.apidatingappus.controller.dto.auth.LoginRequest;
+import com.proyect.apidatingappus.controller.dto.auth.LoginResponse;
+import com.proyect.apidatingappus.exception.precondition.PreconditionsLogin;
 import com.proyect.apidatingappus.service.jwt.UserJwtServiceImpl;
 import com.proyect.apidatingappus.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
+        PreconditionsLogin.checkNullBodyField(loginRequest);
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())

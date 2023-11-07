@@ -35,4 +35,9 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'_'MM'_' dd'_'yyyy'_'hh:MM:SS'_'");
         return CadenaUtils.toMayusculas(localDateTime.format(formatter));
     }
+
+    public static LocalDate getLocalDateToBirthday(String fecha) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
+        return LocalDate.parse(fecha, formatter);
+    }
 }

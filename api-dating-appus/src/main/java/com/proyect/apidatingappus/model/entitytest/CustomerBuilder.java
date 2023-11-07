@@ -1,6 +1,7 @@
 package com.proyect.apidatingappus.model.entitytest;
 
 import com.proyect.apidatingappus.model.Customer;
+import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.model.complement.Gender;
 import com.proyect.apidatingappus.model.complement.Rol;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class CustomerBuilder {
     private Rol rol;
     private Gender gender;
     private LocalDate birthdate;
+    private User user;
 
     private CustomerBuilder toCustomerBuilder() {
         return CustomerBuilder.builder()
@@ -31,11 +33,12 @@ public class CustomerBuilder {
                 .rol(Rol.U)
                 .gender(Gender.M)
                 .birthdate(LocalDate.now().minusYears(18))
+                .user(null)
                 .build();
     }
 
     public Customer toCustomer() {
         CustomerBuilder builder = toCustomerBuilder();
-        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.rol, builder.gender, builder.birthdate);
+        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.rol, builder.gender, builder.birthdate,builder.user);
     }
 }

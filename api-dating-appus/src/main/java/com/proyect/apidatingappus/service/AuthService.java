@@ -1,7 +1,7 @@
 package com.proyect.apidatingappus.service;
 
-import com.proyect.apidatingappus.model.User;
+import com.proyect.apidatingappus.controller.dto.auth.SignUpDto;
 
 public interface AuthService {
-    boolean createUser(User user);
+    boolean createUser(SignUpDto signUpDto);
 }

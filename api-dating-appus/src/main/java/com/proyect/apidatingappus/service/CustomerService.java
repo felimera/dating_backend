@@ -9,7 +9,7 @@ import java.util.List;
 public interface CustomerService {
     List<Customer> getAll();
 
-    Customer postCustomer(Customer customer);
+    Customer postCustomer(Customer customer, Long idUser);
 
     Customer putCustomer(Long id, Customer customer);
 

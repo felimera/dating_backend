@@ -26,14 +26,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @Transactional
-    public Customer postCustomer(Customer customer) {
+    public Customer postCustomer(Customer customer, Long idUser) {
         if (this.isEmailExist(customer.getEmail())) {
             throw new BusinessException("300", HttpStatus.CONFLICT, "This email already exists.");
         }
-        Customer entity = customerRepository.save(customer);
-        userService.postUser(this.addUserForAuthorization(entity));
-        return entity;
+        User user = userService.findById(idUser);
+        customer.setUser(user);
+        return customerRepository.save(customer);
     }
 
     private User addUserForAuthorization(Customer entity) {

@@ -1,8 +1,7 @@
 package com.proyect.apidatingappus.controller;
 
-import com.proyect.apidatingappus.controller.dto.UserDto;
-import com.proyect.apidatingappus.controller.mapper.UserMapper;
-import com.proyect.apidatingappus.model.User;
+import com.proyect.apidatingappus.controller.dto.auth.SignUpDto;
+import com.proyect.apidatingappus.exception.precondition.PreconditionsSignup;
 import com.proyect.apidatingappus.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +19,9 @@ public class SignupController {
     AuthService authService;
 
     @PostMapping
-    public ResponseEntity<Object> signUser(@RequestBody UserDto userDto) {
-        User user = UserMapper.INSTANCE.toEntity(userDto);
-        boolean isUserCreated = authService.createUser(user);
+    public ResponseEntity<Object> signUser(@RequestBody SignUpDto signUpDto) {
+        PreconditionsSignup.checkNullBodyField(signUpDto);
+        boolean isUserCreated = authService.createUser(signUpDto);
         if (isUserCreated)
             return ResponseEntity.status(HttpStatus.CREATED).body("User created succesfully.");
         else

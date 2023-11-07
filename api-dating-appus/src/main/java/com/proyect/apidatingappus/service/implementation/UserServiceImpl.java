@@ -15,23 +15,15 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public User postUser(User user) {
-        if (this.isEmailExist(user.getEmail())) {
-            throw new BusinessException("300", HttpStatus.CONFLICT, "This email already exists.");
-        }
-
-        return userRepository.save(user);
-    }
-
-    private boolean isEmailExist(String email) {
-        return userRepository.findOneByEmail(email).isPresent();
-    }
-
-    @Override
     public User putUser(User user) {
         User entity = userRepository.findOneByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException("The user does not exist."));
         entity.setName(user.getName());
         entity.setEmail(user.getEmail());
         return userRepository.save(entity);
+    }
+
+    @Override
+    public User findById(Long idUser) {
+        return userRepository.findById(idUser).orElseThrow(() -> new RuntimeException("The user does not exist."));
     }
 }

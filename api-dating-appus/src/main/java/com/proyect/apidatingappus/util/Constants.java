@@ -13,4 +13,6 @@ public class Constants {
     public static final String NAME_REPORT = "datingReport";
     public static final String EXTENSION_PDF = ".pdf";
     public static final String EXTENSION_XLS = ".xls";
+
+    public static final String AMPERSAND = "&";
 }
