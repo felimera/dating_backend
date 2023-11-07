@@ -79,7 +79,7 @@ class TestCustomerServiceImpl {
     @Test
     void when_a_record_is_saved_correctly() {
         given(customerRepository.save(Mockito.any())).willReturn(customer);
-        Customer postCustomer = customerServiceImpl.postCustomer(customer);
+        Customer postCustomer = customerServiceImpl.postCustomer(customer, anyLong());
         assertThat(postCustomer).isNotNull();
     }
 
@@ -87,7 +87,7 @@ class TestCustomerServiceImpl {
     @Test
     void when_there_is_a_repeated_email() {
         given(customerRepository.findByEmail(anyString())).willReturn(Optional.of(customer));
-        assertThrows(BusinessException.class, () -> customerServiceImpl.postCustomer(customer));
+        assertThrows(BusinessException.class, () -> customerServiceImpl.postCustomer(customer, anyLong()));
         verify(customerRepository, never()).save(any(Customer.class));
     }
 

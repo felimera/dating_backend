@@ -1,6 +1,5 @@
 package com.proyect.apidatingappus.service.implementation;
 
-import com.proyect.apidatingappus.exception.BusinessException;
 import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.model.entitytest.UserBuilder;
 import com.proyect.apidatingappus.repository.UserRepository;
@@ -10,15 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -35,22 +32,6 @@ class TestUserServiceImpl {
     @BeforeEach
     void setUp() {
         user = UserBuilder.builder().build().toUser();
-    }
-
-    @DisplayName("Test JUnit for the PostUser method.")
-    @Test
-    void when_the_user_is_registered_correctly() {
-        given(userRepository.save(Mockito.any())).willReturn(user);
-        User postUser = userServiceImpl.postUser(user);
-        assertThat(postUser).isNotNull();
-    }
-
-    @DisplayName("Test JUnit for the PostUser method.")
-    @Test
-    void when_there_is_a_repeated_email() {
-        given(userRepository.findOneByEmail(anyString())).willReturn(Optional.of(user));
-        assertThrows(BusinessException.class, () -> userServiceImpl.postUser(user));
-        verify(userRepository, never()).save(any(User.class));
     }
 
     @DisplayName("Test JUnit for the PutUser method.")
@@ -72,5 +53,20 @@ class TestUserServiceImpl {
         given(userRepository.findOneByEmail(anyString())).willReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> userServiceImpl.putUser(user));
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @DisplayName("Test JUnit for the FindById method.")
+    @Test
+    void when_the_user_id_is_found() {
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        User user = userServiceImpl.findById(anyLong());
+        assertThat(user).isNotNull();
+    }
+
+    @DisplayName("Test JUnit for the FindById method.")
+    @Test
+    void when_the_id_does_not_find_results() {
+        given(userRepository.findById(anyLong())).willReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> userServiceImpl.findById(anyLong()));
     }
 }
