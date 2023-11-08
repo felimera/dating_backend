@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ErrorDto {
+public class MessageDto {
     private String code;
     private String message;
 }

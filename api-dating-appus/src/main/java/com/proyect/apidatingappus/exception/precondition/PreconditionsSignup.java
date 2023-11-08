@@ -2,6 +2,7 @@ package com.proyect.apidatingappus.exception.precondition;
 
 import com.proyect.apidatingappus.controller.dto.auth.SignUpDto;
 import com.proyect.apidatingappus.exception.RequestException;
+import com.proyect.apidatingappus.util.DateUtil;
 
 import java.util.Objects;
 
@@ -29,6 +30,9 @@ public class PreconditionsSignup {
         }
         if (Objects.isNull(signUpDto.getFechaNacimiento()) && signUpDto.getFechaNacimiento().length() == 0) {
             throw new RequestException("401", "The date of birth cannot be null or empty.");
+        }
+        if (DateUtil.isValidateFormatDate(signUpDto.getFechaNacimiento())) {
+            throw new RequestException("401", "Date format error. The date must have the format: 'dd/MM/yyyy'.");
         }
     }
 }
