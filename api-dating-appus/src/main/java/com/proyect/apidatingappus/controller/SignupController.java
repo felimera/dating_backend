@@ -22,8 +22,12 @@ public class SignupController {
         PreconditionsSignup.checkNullBodyField(signUpDto);
         boolean isUserCreated = authService.createUser(signUpDto);
         if (isUserCreated)
-            return ResponseEntity.status(HttpStatus.CREATED).body(MessageDto.builder().code(String.valueOf(HttpStatus.CREATED.value())).message("User created succesfully.").build());
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(MessageDto.builder().code(String.valueOf(HttpStatus.CREATED.value())).message("User created succesfully.").build());
         else
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageDto.builder().code(String.valueOf(HttpStatus.BAD_REQUEST.value())).message("Failed created user.").build());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(MessageDto.builder().code(String.valueOf(HttpStatus.BAD_REQUEST.value())).message("Failed created user.").build());
     }
 }
