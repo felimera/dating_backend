@@ -67,4 +67,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getById(Long id) {
         return customerRepository.findById(id).orElseThrow(() -> new BusinessException("201", HttpStatus.NOT_FOUND, "The user does not exist."));
     }
+
+    @Override
+    public Customer getByEmail(String email) {
+        return customerRepository.findByEmail(email).orElseThrow(() -> new BusinessException("201", HttpStatus.NOT_FOUND, "The user does not exist."));
+    }
 }
