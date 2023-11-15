@@ -111,4 +111,20 @@ class TestCustomerServiceImpl {
         assertThrows(RuntimeException.class, () -> customerServiceImpl.putCustomer(anyLong(), customer));
         verify(customerRepository, never()).save(any(Customer.class));
     }
+
+    @DisplayName("Test to validate the query by email. If you return something, ask it.")
+    @Test
+    void when_the_email_query_returns_a_record() {
+        given(customerRepository.findByEmail(anyString())).willReturn(Optional.of(customer));
+        Customer customer1 = customerServiceImpl.getByEmail(anyString());
+        assertNotNull(customer1);
+    }
+
+    @DisplayName("Test to validate the query by email. The question does not return anything.")
+    @Test
+    void when_the_email_query_does_not_return_a_record() {
+        given(customerRepository.findByEmail(anyString())).willReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> customerServiceImpl.getByEmail(anyString()));
+        verify(customerRepository, never()).save(any(Customer.class));
+    }
 }
