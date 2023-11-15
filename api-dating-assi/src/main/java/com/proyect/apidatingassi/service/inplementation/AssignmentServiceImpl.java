@@ -37,4 +37,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     public List<Assignment> getAll(int order) {
         return assignmentRepository.findAll(this.getWayToOrganizeData(order));
     }
+
+    @Override
+    public Assignment getById(Long id) {
+        return assignmentRepository.findById(id).orElseThrow(() -> new RuntimeException("The service consulted does not exist."));
+    }
+
+    @Override
+    public List<Assignment> getByListIds(List<Long> ids) {
+        return assignmentRepository.getByListIds(ids);
+    }
 }

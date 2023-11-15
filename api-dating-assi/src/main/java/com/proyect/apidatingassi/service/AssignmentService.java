@@ -8,4 +8,8 @@ import java.util.List;
 @Service
 public interface AssignmentService {
     List<Assignment> getAll(int order);
+
+    Assignment getById(Long id);
+
+    List<Assignment> getByListIds(List<Long> ids);
 }

@@ -8,4 +8,5 @@ public class AssignmentDto {
     private String nombre;
     private String descripcion;
     private long precio;
+    private  int posicion;
 }
