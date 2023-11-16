@@ -19,7 +19,7 @@ public interface CustomerMapper {
     @Mapping(target = "telefono", source = "phone")
     @Mapping(target = "correo", source = "email")
     @Mapping(target = "genero", expression = "java(getGender(customer))")
-    @Mapping(target = "fechaNaciemiento", source = "birthdate", dateFormat = Constants.DATE_FORMAT)
+    @Mapping(target = "fechaNacimiento", source = "birthdate", dateFormat = Constants.DATE_FORMAT)
     @Mapping(target = "rol", expression = "java(getRol(customer))")
     CustomerDto toDto(Customer customer);
 
