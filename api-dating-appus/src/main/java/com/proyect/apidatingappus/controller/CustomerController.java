@@ -44,6 +44,7 @@ public class CustomerController {
 
     @GetMapping(value = "/findemail")
     public ResponseEntity<Object> getByEmail(@RequestParam(name = "email") String email) {
+        PreconditionsCustomer.checkNullEmailField(email);
         Customer customer = customerService.getByEmail(email);
         return ResponseEntity.ok(CustomerMapper.INSTANCE.toDto(customer));
     }
