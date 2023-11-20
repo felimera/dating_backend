@@ -40,4 +40,9 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
         return LocalDate.parse(fecha, formatter);
     }
+
+    public static String getFormaterStringTable(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM' ' dd ' del 'yyyy' a las' hh:MM 'horas'.");
+        return CadenaUtils.toMayusculas(localDateTime.format(formatter));
+    }
 }
