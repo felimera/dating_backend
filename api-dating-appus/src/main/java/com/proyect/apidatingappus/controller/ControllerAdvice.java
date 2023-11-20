@@ -2,6 +2,7 @@ package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.MessageDto;
 import com.proyect.apidatingappus.exception.BusinessException;
+import com.proyect.apidatingappus.exception.NotFoundException;
 import com.proyect.apidatingappus.exception.RequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,12 @@ public class ControllerAdvice {
 
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<MessageDto> businessExceptionHandler(BusinessException ex) {
+        MessageDto error = MessageDto.builder().code(ex.getCode()).message(ex.getMessage()).build();
+        return new ResponseEntity<>(error, ex.getHttpStatus());
+    }
+
+    @ExceptionHandler(value = NotFoundException.class)
+    public ResponseEntity<MessageDto> notFoundExceptionHandler(NotFoundException ex) {
         MessageDto error = MessageDto.builder().code(ex.getCode()).message(ex.getMessage()).build();
         return new ResponseEntity<>(error, ex.getHttpStatus());
     }
