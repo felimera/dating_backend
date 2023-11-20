@@ -49,4 +49,8 @@ public class AppointmentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(path = "/customer")
+    public ResponseEntity<Object> getAppointmentByIdCustomer(@RequestParam(name = "idCustomer") Long idCustomer) {
+        return ResponseEntity.ok(appointmentService.getAppointmentByIdCustomer(idCustomer));
+    }
 }
