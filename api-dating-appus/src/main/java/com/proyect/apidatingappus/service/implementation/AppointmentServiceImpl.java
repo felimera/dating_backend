@@ -105,6 +105,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         return list;
     }
 
+    @Override
+    public Appointment getById(Long id) {
+        return appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("This quote does not exist.", "701", HttpStatus.NOT_FOUND));
+    }
+
     private static String getFechaHora(LocalDate key, List<Appointment> value) {
         String hora = value.stream().findFirst().orElseThrow().getTime();
         return DateUtil.getFormaterStringTable(key.atTime(LocalTime.parse(hora)));

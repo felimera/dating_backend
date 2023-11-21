@@ -17,4 +17,6 @@ public interface AppointmentService {
     void deleteAppointment(Long id);
 
     List<AppResponseTable> getAppointmentByIdCustomer(Long idCustomer);
+
+    Appointment getById(Long id);
 }

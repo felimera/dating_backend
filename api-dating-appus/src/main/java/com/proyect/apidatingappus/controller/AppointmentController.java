@@ -53,4 +53,10 @@ public class AppointmentController {
     public ResponseEntity<Object> getAppointmentByIdCustomer(@RequestParam(name = "idCustomer") Long idCustomer) {
         return ResponseEntity.ok(appointmentService.getAppointmentByIdCustomer(idCustomer));
     }
+
+    @GetMapping(path = "{id}")
+    public ResponseEntity<Object> getById(@PathVariable(name = "id") Long id) {
+        Appointment entity = appointmentService.getById(id);
+        return ResponseEntity.ok(AppointmentMapper.INSTANCE.toDto(entity));
+    }
 }
