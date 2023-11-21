@@ -1,8 +1,12 @@
 package com.proyect.apidatingappus.service.implementation;
 
+import com.proyect.apidatingappus.controller.dto.table.AppResponseTable;
 import com.proyect.apidatingappus.exception.BusinessException;
+import com.proyect.apidatingappus.exception.NotFoundException;
 import com.proyect.apidatingappus.model.Appointment;
+import com.proyect.apidatingappus.model.Assignment;
 import com.proyect.apidatingappus.model.entitytest.AppointmentBuilder;
+import com.proyect.apidatingappus.model.entitytest.AssignmentBuilder;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.AssignmentService;
 import com.proyect.apidatingappus.service.CustomerService;
@@ -16,10 +20,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -108,5 +114,25 @@ class TestAppointmentServiceImpl {
         given(appointmentRepository.findById(anyLong())).willReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> appointmentService.deleteAppointment(anyLong()));
         verify(appointmentRepository, never()).save(any(Appointment.class));
+    }
+
+    @DisplayName("Test JUnit to validate the table query.")
+    @Test
+    void when_the_data_returns_a_list_of_results() {
+        Assignment assignment = AssignmentBuilder.builder().build().toAssignment();
+        Appointment entity = AppointmentBuilder.builder().build().toEditCustomerAndAssignment(null, assignment);
+        given(appointmentRepository.findAllByIdCustomer(anyLong())).willReturn(Collections.singletonList(entity));
+        List<AppResponseTable> appResponseTables = appointmentService.getAppointmentByIdCustomer(anyLong());
+        assertThat(appResponseTables).isNotNull();
+        assertFalse(appResponseTables.isEmpty());
+        assertThat(appResponseTables.size()).isEqualTo(1);
+    }
+
+    @DisplayName("Test JUnit to validate the table query.")
+    @Test
+    void when_the_data_does_not_return_a_list_of_results() {
+        given(appointmentRepository.findAllByIdCustomer(anyLong())).willReturn(Collections.emptyList());
+        assertThrows(NotFoundException.class, () -> appointmentService.getAppointmentByIdCustomer(anyLong()));
+        verify(appointmentRepository).findAllByIdCustomer(anyLong());
     }
 }
