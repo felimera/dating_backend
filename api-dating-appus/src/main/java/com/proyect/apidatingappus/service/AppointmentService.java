@@ -19,4 +19,6 @@ public interface AppointmentService {
     List<AppResponseTable> getAppointmentByIdCustomer(Long idCustomer);
 
     Appointment getById(Long id);
+
+    Appointment putAssignmentInAppointment(Long id, List<Long> idAssignments, Long idCustomer);
 }

@@ -31,14 +31,14 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<Object> postAppointment(@RequestBody AppointmentDto appointmentDto) {
-        PreconditionsAppointment.checkNullBodyField(appointmentDto, Boolean.TRUE);
+        PreconditionsAppointment.checkNullBodyField(appointmentDto);
         Appointment appointment = appointmentService.postAppointment(AppointmentMapper.INSTANCE.toEntity(appointmentDto), appointmentDto.getIdsAssignment());
         return ResponseEntity.status(HttpStatus.CREATED).body(AppointmentMapper.INSTANCE.toDto(appointment));
     }
 
     @PutMapping(value = "/{idAppointment}")
     public ResponseEntity<Object> putAppointment(@PathVariable(name = "idAppointment") Long idAppointment, @RequestBody AppointmentDto appointmentDto) {
-        PreconditionsAppointment.checkNullBodyField(appointmentDto, Boolean.FALSE);
+        PreconditionsAppointment.checkFieldsWithoutCustomerIdAndAssignmentId(appointmentDto);
         Appointment appointment = appointmentService.putAppointment(idAppointment, appointmentDto.getIdCustomer(), appointmentDto.getIdAssignment(), AppointmentMapper.INSTANCE.toEntity(appointmentDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(AppointmentMapper.INSTANCE.toDto(appointment));
     }
@@ -58,5 +58,12 @@ public class AppointmentController {
     public ResponseEntity<Object> getById(@PathVariable(name = "id") Long id) {
         Appointment entity = appointmentService.getById(id);
         return ResponseEntity.ok(AppointmentMapper.INSTANCE.toDto(entity));
+    }
+
+    @PutMapping(value = "/editassignment/{idAppointment}")
+    public ResponseEntity<Object> putAssignmentInAppointment(@PathVariable(name = "idAppointment") Long idAppointment, @RequestBody AppointmentDto appointmentDto) {
+        PreconditionsAppointment.checkTheCustomerIdFieldsAndTheAssignmentIdList(appointmentDto);
+        Appointment appointment = appointmentService.putAssignmentInAppointment(idAppointment, appointmentDto.getIdsAssignment(), appointmentDto.getIdCustomer());
+        return ResponseEntity.status(HttpStatus.CREATED).body(AppointmentMapper.INSTANCE.toDto(appointment));
     }
 }

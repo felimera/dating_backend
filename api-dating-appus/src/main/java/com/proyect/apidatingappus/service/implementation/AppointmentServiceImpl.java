@@ -79,9 +79,6 @@ public class AppointmentServiceImpl implements AppointmentService {
             appOld.setDate(entityNew.getDate());
             appOld.setTime(entityNew.getTime());
             appOld.setTotalPrice(entityNew.getTotalPrice());
-
-            appOld.setCustomer(customerService.getById(idCustomer));
-            appOld.setAssignment(assignmentService.getById(idAssignment));
         });
 
         return appointmentRepository.saveAll(appointmentList).stream().findFirst().orElseThrow();
@@ -129,6 +126,26 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment getById(Long id) {
         return appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("This quote does not exist.", "701", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public Appointment putAssignmentInAppointment(Long id, List<Long> idAssignments, Long idCustomer) {
+        Appointment entityOld = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND));
+
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
+        dto.setIdCustomer(idCustomer);
+        dto.setFecha(entityOld.getDate());
+
+        List<Appointment> appointmentList = appointmentRepository.getAppointmentListByParameter(dto);
+        if (appointmentList.isEmpty())
+            throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
+
+        for (int cont = 0; cont < appointmentList.size(); cont++) {
+            Long idAssignment = idAssignments.get(cont);
+            appointmentList.get(cont).setAssignment(assignmentService.getById(idAssignment));
+        }
+
+        return appointmentRepository.saveAll(appointmentList).stream().findFirst().orElseThrow();
     }
 
     private static String getFechaHora(LocalDate key, List<Appointment> value) {
