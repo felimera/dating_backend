@@ -102,21 +102,26 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
 
         Map<LocalDate, List<Appointment>> appoinmentMap = appointmentList.stream().collect(Collectors.groupingBy(Appointment::getDate));
-        appoinmentMap.forEach((key, value) -> {
-            AppResponseTable appResponseTable = new AppResponseTable();
-            appResponseTable.setFecha(getFechaHora(key, value));
 
-            List<ContentTable> contentTableList = new ArrayList<>();
-            for (Appointment appointment : value) {
-                appResponseTable.setIdAppointment(appointment.getId());
-                appResponseTable.setPrecioTotal(NumberUtils.getFormaterPrice(appointment.getTotalPrice()));
+        appoinmentMap
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(element -> {
+                    AppResponseTable appResponseTable = new AppResponseTable();
+                    appResponseTable.setFecha(getFechaHora(element.getKey(), element.getValue()));
 
-                contentTableList.add(getContentTable(appointment));
-            }
-            appResponseTable.setContentTableList(contentTableList);
+                    List<ContentTable> contentTableList = new ArrayList<>();
+                    for (Appointment appointment : element.getValue()) {
+                        appResponseTable.setIdAppointment(appointment.getId());
+                        appResponseTable.setPrecioTotal(NumberUtils.getFormaterPrice(appointment.getTotalPrice()));
 
-            list.add(appResponseTable);
-        });
+                        contentTableList.add(getContentTable(appointment));
+                    }
+                    appResponseTable.setContentTableList(contentTableList);
+
+                    list.add(appResponseTable);
+                });
 
         return list;
     }
