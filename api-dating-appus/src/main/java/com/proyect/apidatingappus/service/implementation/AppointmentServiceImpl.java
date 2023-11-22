@@ -1,5 +1,6 @@
 package com.proyect.apidatingappus.service.implementation;
 
+import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.controller.dto.table.AppResponseTable;
 import com.proyect.apidatingappus.controller.dto.table.ContentTable;
 import com.proyect.apidatingappus.exception.BusinessException;
@@ -9,6 +10,7 @@ import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.AppointmentService;
 import com.proyect.apidatingappus.service.AssignmentService;
 import com.proyect.apidatingappus.service.CustomerService;
+import com.proyect.apidatingappus.util.Constants;
 import com.proyect.apidatingappus.util.DateUtil;
 import com.proyect.apidatingappus.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,16 +63,30 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment putAppointment(Long id, Long idCustomer, Long idAssignment, Appointment appointment) {
-        Appointment entity = appointmentRepository.findById(id).orElseThrow(() -> new RuntimeException("This quote does not exist."));
-        entity.setDate(appointment.getDate());
-        entity.setTime(appointment.getTime());
-        entity.setTotalPrice(appointment.getTotalPrice());
+    public Appointment putAppointment(Long id, Long idCustomer, Long idAssignment, Appointment entityNew) {
 
-        entity.setCustomer(customerService.getById(idCustomer));
-        entity.setAssignment(assignmentService.getById(idAssignment));
-        return appointmentRepository.save(entity);
+        Appointment entityOld = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND));
+
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
+        dto.setIdCustomer(idCustomer);
+        dto.setFecha(entityOld.getDate());
+
+        List<Appointment> appointmentList = appointmentRepository.getAppointmentListByParameter(dto);
+        if (appointmentList.isEmpty())
+            throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
+
+        appointmentList.forEach(appOld -> {
+            appOld.setDate(entityNew.getDate());
+            appOld.setTime(entityNew.getTime());
+            appOld.setTotalPrice(entityNew.getTotalPrice());
+
+            appOld.setCustomer(customerService.getById(idCustomer));
+            appOld.setAssignment(assignmentService.getById(idAssignment));
+        });
+
+        return appointmentRepository.saveAll(appointmentList).stream().findFirst().orElseThrow();
     }
+
 
     @Override
     public void deleteAppointment(Long id) {
@@ -83,7 +99,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<AppResponseTable> list = new ArrayList<>();
         List<Appointment> appointmentList = appointmentRepository.findAllByIdCustomer(idCustomer);
         if (appointmentList.isEmpty())
-            throw new NotFoundException("No results were found.", "601", HttpStatus.NOT_FOUND);
+            throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
 
         Map<LocalDate, List<Appointment>> appoinmentMap = appointmentList.stream().collect(Collectors.groupingBy(Appointment::getDate));
         appoinmentMap.forEach((key, value) -> {
