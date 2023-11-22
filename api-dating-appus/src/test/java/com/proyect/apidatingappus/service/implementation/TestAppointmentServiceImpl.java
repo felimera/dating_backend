@@ -1,5 +1,6 @@
 package com.proyect.apidatingappus.service.implementation;
 
+import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.controller.dto.table.AppResponseTable;
 import com.proyect.apidatingappus.exception.BusinessException;
 import com.proyect.apidatingappus.exception.NotFoundException;
@@ -20,6 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -81,14 +83,24 @@ class TestAppointmentServiceImpl {
     @DisplayName("Try JUnit to update a record in PutAppointment.")
     @Test
     public void when_a_record_is_updated_successfully() {
-        given(appointmentRepository.save(appointment)).willReturn(appointment);
         given(appointmentRepository.findById(anyLong())).willReturn(Optional.of(appointment));
+        given(appointmentRepository.getAppointmentListByParameter(any(AppointmentSearchParametersDto.class))).willReturn(Arrays.asList(appointment));
+        given(appointmentRepository.saveAll(Arrays.asList(appointment))).willReturn(Arrays.asList(appointment));
         appointment.setDate(LocalDate.now().plusMonths(2));
         appointment.setTime("14:35:14");
         Appointment putAppointment = appointmentService.putAppointment(anyLong(), 1L, 2L, appointment);
         assertThat(putAppointment).isNotNull();
         assertThat(putAppointment.getDate()).isEqualTo(LocalDate.now().plusMonths(2));
         assertThat(putAppointment.getTime()).isEqualTo("14:35:14");
+    }
+
+    @DisplayName("Try JUnit to update a record in PutAppointment.")
+    @Test
+    void when_the_query_returns_nothing() {
+        given(appointmentRepository.findById(anyLong())).willReturn(Optional.of(appointment));
+        given(appointmentRepository.getAppointmentListByParameter(any(AppointmentSearchParametersDto.class))).willReturn(Collections.emptyList());
+        assertThrows(NotFoundException.class, () -> appointmentService.putAppointment(anyLong(), 1L, 2L, appointment));
+        verify(appointmentRepository, never()).saveAll(anyCollection());
     }
 
     @DisplayName("Test JUnit to delete a record in the deleteAppointment method.")
