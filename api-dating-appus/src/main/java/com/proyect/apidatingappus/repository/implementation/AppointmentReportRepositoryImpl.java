@@ -1,6 +1,6 @@
 package com.proyect.apidatingappus.repository.implementation;
 
-import com.proyect.apidatingappus.controller.dto.ReportSearchParametersDto;
+import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.repository.AppointmentReportRepository;
@@ -17,7 +17,7 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
     private EntityManager em;
 
     @Override
-    public List<Appointment> getAppointmentListByParameter(ReportSearchParametersDto reportSearchParametersDto) {
+    public List<Appointment> getAppointmentListByParameter(AppointmentSearchParametersDto appointmentSearchParametersDto) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Appointment> cq = cb.createQuery(Appointment.class);
 
@@ -26,11 +26,14 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
 
         Join<Appointment, Customer> appointmentCustomerJoin = appointmentRoot.join("customer", JoinType.INNER);
 
-        if (Objects.nonNull(reportSearchParametersDto.getIdCustomer()))
-            predicates.add(cb.equal(appointmentCustomerJoin.get("id"), reportSearchParametersDto.getIdCustomer()));
+        if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
+            predicates.add(cb.equal(appointmentCustomerJoin.get("id"), appointmentSearchParametersDto.getIdCustomer()));
 
-        if (Objects.nonNull(reportSearchParametersDto.getFechaInicio()) && Objects.nonNull(reportSearchParametersDto.getFechaFin()))
-            predicates.add(cb.between(appointmentRoot.get("date"), reportSearchParametersDto.getFechaInicio(), reportSearchParametersDto.getFechaFin()));
+        if (Objects.nonNull(appointmentSearchParametersDto.getFechaInicio()) && Objects.nonNull(appointmentSearchParametersDto.getFechaFin()))
+            predicates.add(cb.between(appointmentRoot.get("date"), appointmentSearchParametersDto.getFechaInicio(), appointmentSearchParametersDto.getFechaFin()));
+
+        if (Objects.nonNull(appointmentSearchParametersDto.getFecha()))
+            predicates.add(cb.equal(appointmentRoot.get("date"), appointmentSearchParametersDto.getFecha()));
 
         cq.where(predicates.toArray(new Predicate[0]));
 

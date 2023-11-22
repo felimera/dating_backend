@@ -1,6 +1,6 @@
 package com.proyect.apidatingappus.controller.report;
 
-import com.proyect.apidatingappus.controller.dto.ReportSearchParametersDto;
+import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.service.report.DatingReportByService;
 import com.proyect.apidatingappus.util.Constants;
 import com.proyect.apidatingappus.util.DateUtil;
@@ -31,7 +31,7 @@ public class DatingReportController {
             @RequestParam(name = "fechaInicio", required = false) LocalDate fechaInicio,
             @RequestParam(name = "fechaFin", required = false) LocalDate fechaFin
     ) throws JRException {
-        ReportSearchParametersDto dto = new ReportSearchParametersDto(idCustomer, fechaInicio, fechaFin);
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto(idCustomer, fechaInicio, fechaFin,null);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_PDF);
         httpHeaders.setContentDispositionFormData(Constants.NAME_REPORT, Constants.NAME_REPORT.concat(DateUtil.getExportFormaterDateReport(LocalDateTime.now())).concat(Constants.EXTENSION_PDF));
@@ -44,7 +44,7 @@ public class DatingReportController {
             @RequestParam(name = "fechaInicio", required = false) LocalDate fechaInicio,
             @RequestParam(name = "fechaFin", required = false) LocalDate fechaFin
     ) throws JRException {
-        ReportSearchParametersDto dto = new ReportSearchParametersDto(idCustomer, fechaInicio, fechaFin);
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto(idCustomer, fechaInicio, fechaFin,null);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8");
         var contentDisposition = ContentDisposition

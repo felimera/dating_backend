@@ -1,6 +1,6 @@
 package com.proyect.apidatingappus.service.report.implementation;
 
-import com.proyect.apidatingappus.controller.dto.ReportSearchParametersDto;
+import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.exception.RequestException;
 import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.model.Assignment;
@@ -81,7 +81,7 @@ public class DatingReportByServiceImpl implements DatingReportByService {
         return assignmentTableReportDto;
     }
 
-    private JasperPrint reportMain(ReportSearchParametersDto parametersDto) throws JRException {
+    private JasperPrint reportMain(AppointmentSearchParametersDto parametersDto) throws JRException {
         InputStream employeeReportStream = getClass().getResourceAsStream("/report/DatingAppUsReport.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(employeeReportStream);
 
@@ -96,16 +96,16 @@ public class DatingReportByServiceImpl implements DatingReportByService {
     }
 
     @Override
-    public byte[] exportToPdf(ReportSearchParametersDto reportSearchParametersDto) throws JRException {
-        return JasperExportManager.exportReportToPdf(reportMain(reportSearchParametersDto));
+    public byte[] exportToPdf(AppointmentSearchParametersDto appointmentSearchParametersDto) throws JRException {
+        return JasperExportManager.exportReportToPdf(reportMain(appointmentSearchParametersDto));
     }
 
     @Override
-    public byte[] exportToXls(ReportSearchParametersDto reportSearchParametersDto) throws JRException {
+    public byte[] exportToXls(AppointmentSearchParametersDto appointmentSearchParametersDto) throws JRException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         SimpleOutputStreamExporterOutput output = new SimpleOutputStreamExporterOutput(byteArrayOutputStream);
         JRXlsExporter exporter = new JRXlsExporter();
-        exporter.setExporterInput(new SimpleExporterInput(reportMain(reportSearchParametersDto)));
+        exporter.setExporterInput(new SimpleExporterInput(reportMain(appointmentSearchParametersDto)));
         exporter.setExporterOutput(output);
         exporter.exportReport();
         output.close();

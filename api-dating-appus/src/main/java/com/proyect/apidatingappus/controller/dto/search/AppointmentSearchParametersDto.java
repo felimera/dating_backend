@@ -1,7 +1,8 @@
-package com.proyect.apidatingappus.controller.dto;
+package com.proyect.apidatingappus.controller.dto.search;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -9,8 +10,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ReportSearchParametersDto {
+@NoArgsConstructor
+public class AppointmentSearchParametersDto {
     private Long idCustomer;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private LocalDate fecha;
 }
