@@ -15,4 +15,6 @@ public class Constants {
     public static final String EXTENSION_XLS = ".xls";
 
     public static final String AMPERSAND = "&";
+
+    public static final String MESSAGE_NOT_FOUND = "No results were found.";
 }
