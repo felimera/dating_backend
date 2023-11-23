@@ -70,12 +70,9 @@ public class AppointmentController {
     }
 
     @DeleteMapping(path = "/assignment")
-    public ResponseEntity<Object> deleteAppEditAssignment(
-            @RequestParam(name = "idCustomer") Long idCustomer,
-            @RequestParam(name = "fecha") String fecha,
-            @RequestParam(name = "idAssignment") Long idAssignment) {
-        if (appointmentService.deleteAppEditAssignment(idCustomer, LocalDate.parse(fecha), idAssignment))
-            return ResponseEntity.ok(MessageDto.builder().message("Registro eliminado con exito.").code("201").build());
+    public ResponseEntity<Object> deleteAppEditAssignment(@RequestBody AppointmentDto appointmentDto) {
+        if (appointmentService.deleteAppEditAssignment(appointmentDto.getIdCustomer(), LocalDate.parse(appointmentDto.getFecha()), appointmentDto.getIdAssignment()))
+            return ResponseEntity.ok(MessageDto.builder().message("Registro retirado con exito.").code("201").build());
         return ResponseEntity.internalServerError().body(MessageDto.builder().message("Registro no logro ser eliminado.").code("501").build());
     }
 }
