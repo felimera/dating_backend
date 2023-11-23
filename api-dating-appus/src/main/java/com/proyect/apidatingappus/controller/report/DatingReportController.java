@@ -31,7 +31,10 @@ public class DatingReportController {
             @RequestParam(name = "fechaInicio", required = false) LocalDate fechaInicio,
             @RequestParam(name = "fechaFin", required = false) LocalDate fechaFin
     ) throws JRException {
-        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto(idCustomer, fechaInicio, fechaFin,null);
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
+        dto.setIdCustomer(idCustomer);
+        dto.setFechaInicio(fechaInicio);
+        dto.setFechaFin(fechaFin);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_PDF);
         httpHeaders.setContentDispositionFormData(Constants.NAME_REPORT, Constants.NAME_REPORT.concat(DateUtil.getExportFormaterDateReport(LocalDateTime.now())).concat(Constants.EXTENSION_PDF));
@@ -44,7 +47,10 @@ public class DatingReportController {
             @RequestParam(name = "fechaInicio", required = false) LocalDate fechaInicio,
             @RequestParam(name = "fechaFin", required = false) LocalDate fechaFin
     ) throws JRException {
-        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto(idCustomer, fechaInicio, fechaFin,null);
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
+        dto.setIdCustomer(idCustomer);
+        dto.setFechaInicio(fechaInicio);
+        dto.setFechaFin(fechaFin);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8");
         var contentDisposition = ContentDisposition
