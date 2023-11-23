@@ -148,6 +148,22 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.saveAll(appointmentList).stream().findFirst().orElseThrow();
     }
 
+    @Override
+    public boolean deleteAppEditAssignment(Long idCustomer, LocalDate fecha, Long idAssignment) {
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
+        dto.setIdCustomer(idCustomer);
+        dto.setIdAssignment(idAssignment);
+        dto.setFecha(fecha);
+        List<Appointment> appointmentList = appointmentRepository.getAppointmentListByParameter(dto);
+        if (appointmentList.isEmpty())
+            throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
+
+        for (Appointment app : appointmentList) {
+            appointmentRepository.delete(app);
+        }
+        return !appointmentRepository.existsById(appointmentList.stream().findFirst().orElseThrow().getId());
+    }
+
     private static String getFechaHora(LocalDate key, List<Appointment> value) {
         String hora = value.stream().findFirst().orElseThrow().getTime();
         return DateUtil.getFormaterStringTable(key.atTime(LocalTime.parse(hora)));

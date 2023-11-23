@@ -16,4 +16,5 @@ public class AppointmentSearchParametersDto {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private LocalDate fecha;
+    private Long idAssignment;
 }

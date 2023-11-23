@@ -2,6 +2,7 @@ package com.proyect.apidatingappus.repository.implementation;
 
 import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.model.Appointment;
+import com.proyect.apidatingappus.model.Assignment;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.repository.AppointmentReportRepository;
 import jakarta.persistence.EntityManager;
@@ -25,6 +26,7 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
         List<Predicate> predicates = new ArrayList<>();
 
         Join<Appointment, Customer> appointmentCustomerJoin = appointmentRoot.join("customer", JoinType.INNER);
+        Join<Appointment, Assignment> appointmentAssignmentJoin = appointmentRoot.join("assignment", JoinType.INNER);
 
         if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
             predicates.add(cb.equal(appointmentCustomerJoin.get("id"), appointmentSearchParametersDto.getIdCustomer()));
@@ -34,6 +36,9 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
 
         if (Objects.nonNull(appointmentSearchParametersDto.getFecha()))
             predicates.add(cb.equal(appointmentRoot.get("date"), appointmentSearchParametersDto.getFecha()));
+
+        if (Objects.nonNull(appointmentSearchParametersDto.getIdAssignment()))
+            predicates.add(cb.equal(appointmentAssignmentJoin.get("id"), appointmentSearchParametersDto.getIdAssignment()));
 
         cq.where(predicates.toArray(new Predicate[0]));
 

@@ -1,6 +1,7 @@
 package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.AppointmentDto;
+import com.proyect.apidatingappus.controller.dto.MessageDto;
 import com.proyect.apidatingappus.controller.mapper.AppointmentMapper;
 import com.proyect.apidatingappus.exception.precondition.PreconditionsAppointment;
 import com.proyect.apidatingappus.model.Appointment;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -65,5 +67,15 @@ public class AppointmentController {
         PreconditionsAppointment.checkTheCustomerIdFieldsAndTheAssignmentIdList(appointmentDto);
         Appointment appointment = appointmentService.putAssignmentInAppointment(idAppointment, appointmentDto.getIdsAssignment(), appointmentDto.getIdCustomer());
         return ResponseEntity.status(HttpStatus.CREATED).body(AppointmentMapper.INSTANCE.toDto(appointment));
+    }
+
+    @DeleteMapping(path = "/assignment")
+    public ResponseEntity<Object> deleteAppEditAssignment(
+            @RequestParam(name = "idCustomer") Long idCustomer,
+            @RequestParam(name = "fecha") String fecha,
+            @RequestParam(name = "idAssignment") Long idAssignment) {
+        if (appointmentService.deleteAppEditAssignment(idCustomer, LocalDate.parse(fecha), idAssignment))
+            return ResponseEntity.ok(MessageDto.builder().message("Registro eliminado con exito.").code("201").build());
+        return ResponseEntity.internalServerError().body(MessageDto.builder().message("Registro no logro ser eliminado.").code("501").build());
     }
 }
