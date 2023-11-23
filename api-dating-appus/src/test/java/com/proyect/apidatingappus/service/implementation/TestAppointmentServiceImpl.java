@@ -198,4 +198,21 @@ class TestAppointmentServiceImpl {
     void when_the_appointment_old_query_returns_nothing() {
         assertThrows(NotFoundException.class, () -> appointmentService.putAssignmentInAppointment(1L, null, null));
     }
+
+    @DisplayName("Test JUnit for the deleteAppEditAssignment method.")
+    @Test
+    void when_the_assignment_is_removed_correctly() {
+        given(appointmentRepository.getAppointmentListByParameter(any(AppointmentSearchParametersDto.class))).willReturn(Arrays.asList(appointment));
+        given(appointmentRepository.existsById(anyLong())).willReturn(false);
+        willDoNothing().given(appointmentRepository).delete(appointment);
+        appointmentService.deleteAppEditAssignment(1L, LocalDate.now(), 1L);
+        verify(appointmentRepository, times(1)).delete(appointment);
+    }
+
+    @DisplayName("Test JUnit for the deleteAppEditAssignment method.")
+    @Test
+    void when_the_assignment_list_does_not_return_anything() {
+        assertThrows(NotFoundException.class, () -> appointmentService.deleteAppEditAssignment(null, null, null));
+        verify(appointmentRepository, never()).delete(appointment);
+    }
 }
