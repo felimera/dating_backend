@@ -6,8 +6,10 @@ import com.proyect.apidatingappus.exception.BusinessException;
 import com.proyect.apidatingappus.exception.NotFoundException;
 import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.model.Assignment;
+import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.model.entitytest.AppointmentBuilder;
 import com.proyect.apidatingappus.model.entitytest.AssignmentBuilder;
+import com.proyect.apidatingappus.model.entitytest.CustomerBuilder;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.AssignmentService;
 import com.proyect.apidatingappus.service.CustomerService;
@@ -146,5 +148,54 @@ class TestAppointmentServiceImpl {
         given(appointmentRepository.findAllByIdCustomer(anyLong())).willReturn(Collections.emptyList());
         assertThrows(NotFoundException.class, () -> appointmentService.getAppointmentByIdCustomer(anyLong()));
         verify(appointmentRepository).findAllByIdCustomer(anyLong());
+    }
+
+    @DisplayName("Test JUnit for query by Id.")
+    @Test
+    void when_he_returns_an_appointment_record() {
+        given(appointmentRepository.findById(anyLong())).willReturn(Optional.of(appointment));
+        Appointment entity = appointmentService.getById(anyLong());
+        assertThat(entity).isNotNull();
+        assertThat(entity.getId()).isNotNull();
+    }
+
+    @DisplayName("Test JUnit for query by Id.")
+    @Test
+    void when_the_appointment_query_returns_nothing() {
+        given(appointmentRepository.findById(anyLong())).willReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> appointmentService.getById(anyLong()));
+        verify(appointmentRepository, never()).findAllByIdCustomer(anyLong());
+    }
+
+    @DisplayName("Test JUnit for editing putAssignmentInAppointment.")
+    @Test
+    void when_you_edit_the_assignments_successfully() {
+        Customer customer = CustomerBuilder.builder().build().toCustomer();
+        Assignment assignment = AssignmentBuilder.builder().build().toAssignment();
+        Appointment appEntity = AppointmentBuilder.builder().build().toEditCustomerAndAssignment(customer, assignment);
+
+        given(appointmentRepository.findById(anyLong())).willReturn(Optional.of(appEntity));
+        given(appointmentRepository.getAppointmentListByParameter(any(AppointmentSearchParametersDto.class))).willReturn(Arrays.asList(appEntity));
+        given(assignmentService.getById(anyLong())).willReturn(assignment);
+        given(appointmentRepository.saveAll(Arrays.asList(appEntity))).willReturn(Arrays.asList(appEntity));
+
+        Appointment putAppointment = appointmentService.putAssignmentInAppointment(anyLong(), Arrays.asList(1L, 2L), 2L);
+        assertThat(putAppointment).isNotNull();
+        assertThat(putAppointment.getAssignment()).isNotNull();
+        assertThat(putAppointment.getAssignment().getId()).isEqualTo(1L);
+    }
+
+    @DisplayName("Test JUnit for editing putAssignmentInAppointment. 2")
+    @Test
+    void when_you_query_the_appointments_list_nothing_is_returned() {
+        given(appointmentRepository.findById(anyLong())).willReturn(Optional.of(appointment));
+        given(appointmentRepository.getAppointmentListByParameter(any(AppointmentSearchParametersDto.class))).willReturn(Collections.emptyList());
+        assertThrows(NotFoundException.class, () -> appointmentService.putAssignmentInAppointment(1L, null, null));
+    }
+
+    @DisplayName("Test JUnit for editing putAssignmentInAppointment. 1")
+    @Test
+    void when_the_appointment_old_query_returns_nothing() {
+        assertThrows(NotFoundException.class, () -> appointmentService.putAssignmentInAppointment(1L, null, null));
     }
 }
