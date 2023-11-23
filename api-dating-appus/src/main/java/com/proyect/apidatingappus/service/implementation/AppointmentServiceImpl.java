@@ -106,12 +106,14 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .sorted(Map.Entry.comparingByKey())
                 .forEach(element -> {
                     AppResponseTable appResponseTable = new AppResponseTable();
+                    appResponseTable.setFechaSinFor(element.getKey().toString());
                     appResponseTable.setFecha(getFechaHora(element.getKey(), element.getValue()));
 
                     List<ContentTable> contentTableList = new ArrayList<>();
                     for (Appointment appointment : element.getValue()) {
                         appResponseTable.setIdAppointment(appointment.getId());
                         appResponseTable.setPrecioTotal(NumberUtils.getFormaterPrice(appointment.getTotalPrice()));
+                        appResponseTable.setHoraSinFor(appointment.getTime());
 
                         contentTableList.add(getContentTable(appointment));
                     }

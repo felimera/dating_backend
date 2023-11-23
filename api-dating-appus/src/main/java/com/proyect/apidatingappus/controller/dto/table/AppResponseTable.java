@@ -10,6 +10,8 @@ import java.util.List;
 public class AppResponseTable {
     private Long idAppointment;
     private String fecha;
+    private String fechaSinFor;
+    private String horaSinFor;
     private String precioTotal;
     private List<ContentTable> contentTableList;
 
