@@ -32,7 +32,7 @@ public class DateUtil {
     }
 
     public static String getExportFormaterDateReport(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'_'MM'_' dd'_'yyyy'_'hh:MM:SS'_'");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'_'MM'_' dd'_'yyyy'_'hh:mm:SS'_'");
         return CadenaUtils.toMayusculas(localDateTime.format(formatter));
     }
 
@@ -42,7 +42,7 @@ public class DateUtil {
     }
 
     public static String getFormaterStringTable(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM' ' dd ' del 'yyyy' a las' hh:MM 'horas'.");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM' ' dd ' del 'yyyy' a las' hh:mm 'horas'.");
         return CadenaUtils.toMayusculas(localDateTime.format(formatter));
     }
 }
