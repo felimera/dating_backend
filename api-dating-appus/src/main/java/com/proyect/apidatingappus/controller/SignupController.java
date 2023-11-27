@@ -1,6 +1,7 @@
 package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.MessageDto;
+import com.proyect.apidatingappus.controller.dto.auth.ChangePassowrdDto;
 import com.proyect.apidatingappus.controller.dto.auth.SignUpDto;
 import com.proyect.apidatingappus.exception.precondition.PreconditionsSignup;
 import com.proyect.apidatingappus.service.AuthService;
@@ -29,5 +30,18 @@ public class SignupController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(MessageDto.builder().code(String.valueOf(HttpStatus.BAD_REQUEST.value())).message("Failed created user.").build());
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> updatePassword(@RequestBody ChangePassowrdDto changePassowrdDto) {
+        boolean isUser = authService.updatePassword(changePassowrdDto);
+        if (isUser)
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(MessageDto.builder().code(String.valueOf(HttpStatus.CREATED.value())).message("User edit  succesfully.").build());
+        else
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(MessageDto.builder().code(String.valueOf(HttpStatus.BAD_REQUEST.value())).message("Failed edit user.").build());
     }
 }

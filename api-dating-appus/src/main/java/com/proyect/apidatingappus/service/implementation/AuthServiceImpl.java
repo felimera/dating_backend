@@ -1,8 +1,10 @@
 package com.proyect.apidatingappus.service.implementation;
 
+import com.proyect.apidatingappus.controller.dto.auth.ChangePassowrdDto;
 import com.proyect.apidatingappus.controller.dto.auth.SignUpDto;
 import com.proyect.apidatingappus.controller.mapper.UserMapper;
 import com.proyect.apidatingappus.exception.BusinessException;
+import com.proyect.apidatingappus.exception.NotFoundException;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.model.complement.Gender;
@@ -46,6 +48,19 @@ public class AuthServiceImpl implements AuthService {
 
         customerService.postCustomer(customer, entity.getId());
         return true;
+    }
+
+    @Override
+    public boolean updatePassword(ChangePassowrdDto changePassowrdDto) {
+        User user = userRepository.findOneByEmail(changePassowrdDto.getEmail()).orElseThrow(() -> new NotFoundException("300", "This email already exists.", HttpStatus.NOT_FOUND));
+
+        if (!passwordEncoder.matches(changePassowrdDto.getPasswordOld(), user.getPassword())) {
+            throw new BusinessException("300", HttpStatus.CONFLICT, "Password original es incorrecto.");
+        }
+        user.setPassword(passwordEncoder.encode(changePassowrdDto.getPasswordNew()));
+
+        User entity = userRepository.save(user);
+        return userRepository.existsById(entity.getId());
     }
 
     private static Customer getCustomer(SignUpDto signUpDto, String[] nombres) {
