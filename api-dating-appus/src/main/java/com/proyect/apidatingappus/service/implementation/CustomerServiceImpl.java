@@ -6,6 +6,7 @@ import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.repository.CustomerRepository;
 import com.proyect.apidatingappus.service.CustomerService;
 import com.proyect.apidatingappus.service.UserService;
+import com.proyect.apidatingappus.util.Constants;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,16 @@ import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-    @Autowired
+
     private CustomerRepository customerRepository;
+
+    private UserService userService;
+
     @Autowired
-    UserService userService;
+    public CustomerServiceImpl(CustomerRepository customerRepository, UserService userService) {
+        this.customerRepository = customerRepository;
+        this.userService = userService;
+    }
 
     @Override
     public List<Customer> getAll() {
@@ -49,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public Customer putCustomer(Long id, Customer customer) {
-        Customer entity = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("The user does not exist."));
+        Customer entity = customerRepository.findById(id).orElseThrow(() -> new RuntimeException(Constants.MESSAGE_USER_NOT_FOUND));
         entity.setFirtName(customer.getFirtName());
         entity.setLastName(customer.getLastName());
         entity.setPhone(customer.getPhone());
@@ -59,17 +66,17 @@ public class CustomerServiceImpl implements CustomerService {
         entity.setBirthdate(customer.getBirthdate());
 
         Customer entityCustomer = customerRepository.save(entity);
-        userService.putUser(this.addUserForAuthorization(entityCustomer));
+        userService.putUser(entityCustomer.getUser().getId(), this.addUserForAuthorization(entityCustomer));
         return entityCustomer;
     }
 
     @Override
     public Customer getById(Long id) {
-        return customerRepository.findById(id).orElseThrow(() -> new BusinessException("201", HttpStatus.NOT_FOUND, "The user does not exist."));
+        return customerRepository.findById(id).orElseThrow(() -> new BusinessException("201", HttpStatus.NOT_FOUND, Constants.MESSAGE_USER_NOT_FOUND));
     }
 
     @Override
     public Customer getByEmail(String email) {
-        return customerRepository.findByEmail(email).orElseThrow(() -> new BusinessException("201", HttpStatus.NOT_FOUND, "The user does not exist."));
+        return customerRepository.findByEmail(email).orElseThrow(() -> new BusinessException("201", HttpStatus.NOT_FOUND, Constants.MESSAGE_USER_NOT_FOUND));
     }
 }

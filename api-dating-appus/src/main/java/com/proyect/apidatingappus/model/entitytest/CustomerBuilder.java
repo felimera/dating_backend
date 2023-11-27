@@ -39,6 +39,11 @@ public class CustomerBuilder {
 
     public Customer toCustomer() {
         CustomerBuilder builder = toCustomerBuilder();
-        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.rol, builder.gender, builder.birthdate,builder.user);
+        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.rol, builder.gender, builder.birthdate, builder.user);
+    }
+
+    public Customer toEditUser(User user) {
+        CustomerBuilder builder = toCustomerBuilder();
+        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.rol, builder.gender, builder.birthdate, user);
     }
 }

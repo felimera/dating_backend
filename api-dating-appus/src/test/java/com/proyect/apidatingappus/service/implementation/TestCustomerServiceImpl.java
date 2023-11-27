@@ -2,7 +2,9 @@ package com.proyect.apidatingappus.service.implementation;
 
 import com.proyect.apidatingappus.exception.BusinessException;
 import com.proyect.apidatingappus.model.Customer;
+import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.model.entitytest.CustomerBuilder;
+import com.proyect.apidatingappus.model.entitytest.UserBuilder;
 import com.proyect.apidatingappus.repository.CustomerRepository;
 import com.proyect.apidatingappus.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,10 +38,12 @@ class TestCustomerServiceImpl {
     @InjectMocks
     CustomerServiceImpl customerServiceImpl;
     Customer customer;
+    User user;
 
     @BeforeEach
     void setUp() {
         customer = CustomerBuilder.builder().build().toCustomer();
+        user = UserBuilder.builder().build().toUser();
     }
 
     @DisplayName("Test JUnit for the getById method. When it returns a result.")
@@ -94,8 +98,10 @@ class TestCustomerServiceImpl {
     @DisplayName("Try JUnit to update a record in PutCustomer.")
     @Test
     void when_a_record_is_updated_successfully() {
-        given(customerRepository.save(customer)).willReturn(customer);
-        given(customerRepository.findById(anyLong())).willReturn(Optional.of(customer));
+        Customer customer1 = CustomerBuilder.builder().build().toEditUser(user);
+        given(customerRepository.findById(anyLong())).willReturn(Optional.of(customer1));
+        given(customerRepository.save(any(Customer.class))).willReturn(customer1);
+        given(userService.putUser(anyLong(), any())).willReturn(user);
         customer.setBirthdate(LocalDate.now().plusMonths(5));
         customer.setEmail("nombre@nombre.com");
         Customer putCustomer = customerServiceImpl.putCustomer(anyLong(), customer);
