@@ -7,4 +7,6 @@ public interface UserService {
     User putUser(User user);
 
     User findById(Long idUser);
+
+    boolean isExistUser(String email);
 }
