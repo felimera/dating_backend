@@ -25,4 +25,8 @@ public class UserBuilder {
         UserBuilder builder = toUserBuilder();
         return new User(builder.id, builder.name, builder.email, builder.password);
     }
+    public User toEditPassword(String password) {
+        UserBuilder builder = toUserBuilder();
+        return new User(builder.id, builder.name, builder.email, password);
+    }
 }
