@@ -1,10 +1,12 @@
 package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.CustomerDto;
+import com.proyect.apidatingappus.controller.dto.auth.LoginRequest;
 import com.proyect.apidatingappus.controller.mapper.CustomerMapper;
 import com.proyect.apidatingappus.exception.precondition.PreconditionsCustomer;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.service.CustomerService;
+import com.proyect.apidatingappus.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,16 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "api/customer")
 public class CustomerController {
+
+    private CustomerService customerService;
+
+    private LoginService loginService;
+
     @Autowired
-    CustomerService customerService;
+    public CustomerController(CustomerService customerService, LoginService loginService) {
+        this.customerService = customerService;
+        this.loginService = loginService;
+    }
 
     @GetMapping(path = "/all")
     public ResponseEntity<Object> getAll() {
@@ -34,7 +44,14 @@ public class CustomerController {
     public ResponseEntity<Object> putCustomer(@PathVariable(name = "idCustomer") Long idCustomer, @Validated @RequestBody CustomerDto customerDto) {
         PreconditionsCustomer.checkNullBodyField(customerDto);
         Customer customer = customerService.putCustomer(idCustomer, CustomerMapper.INSTANCE.toEntity(customerDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(CustomerMapper.INSTANCE.toDto(customer));
+        CustomerDto dto = CustomerMapper.INSTANCE.toDto(customer);
+
+        LoginRequest request = new LoginRequest();
+        request.setEmail(customer.getEmail());
+        request.setPassword(customer.getUser().getPassword());
+        dto.setToken(loginService.getGenerateTokenWithoutAuthorization(request));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @GetMapping(value = "/{idCustomer}")
