@@ -34,6 +34,7 @@ public class SignupController {
 
     @PutMapping
     public ResponseEntity<Object> updatePassword(@RequestBody ChangePassowrdDto changePassowrdDto) {
+        PreconditionsSignup.checkNullBodyPasswordField(changePassowrdDto);
         boolean isUser = authService.updatePassword(changePassowrdDto);
         if (isUser)
             return ResponseEntity

@@ -1,7 +1,9 @@
 package com.proyect.apidatingappus.exception.precondition;
 
+import com.proyect.apidatingappus.controller.dto.auth.ChangePassowrdDto;
 import com.proyect.apidatingappus.controller.dto.auth.SignUpDto;
 import com.proyect.apidatingappus.exception.RequestException;
+import com.proyect.apidatingappus.util.CadenaUtils;
 import com.proyect.apidatingappus.util.DateUtil;
 
 import java.util.Objects;
@@ -33,6 +35,22 @@ public class PreconditionsSignup {
         }
         if (DateUtil.isValidateFormatDate(signUpDto.getFechaNacimiento())) {
             throw new RequestException("401", "Date format error. The date must have the format: 'dd/MM/yyyy'.");
+        }
+    }
+
+    public static void checkNullBodyPasswordField(ChangePassowrdDto dto) {
+        if (Objects.isNull(dto.getEmail()) || dto.getEmail().length() == 0) {
+            throw new RequestException("401", "The email cannot be null or empty.");
+        }
+        if (Objects.isNull(dto.getPasswordOld()) || dto.getPasswordOld().length() == 0) {
+            throw new RequestException("401", "The original password cannot be empty or null.");
+        }
+        if (Objects.isNull(dto.getPasswordNew()) || dto.getPasswordNew().length() == 0) {
+            throw new RequestException("401", "The new password cannot be empty or null.");
+        }
+
+        if (!CadenaUtils.isValidaEmail(dto.getEmail())) {
+            throw new RequestException("401", "The email is not formatted correctly.");
         }
     }
 }
