@@ -14,4 +14,5 @@ public class CustomerDto {
     private String rol;
     private String genero;
     private String fechaNacimiento;
+    private String token;
 }
