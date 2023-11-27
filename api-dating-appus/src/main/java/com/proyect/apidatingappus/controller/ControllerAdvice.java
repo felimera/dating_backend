@@ -1,6 +1,7 @@
 package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.MessageDto;
+import com.proyect.apidatingappus.exception.AuthenticationException;
 import com.proyect.apidatingappus.exception.BusinessException;
 import com.proyect.apidatingappus.exception.NotFoundException;
 import com.proyect.apidatingappus.exception.RequestException;
@@ -31,6 +32,11 @@ public class ControllerAdvice {
 
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<MessageDto> notFoundExceptionHandler(NotFoundException ex) {
+        MessageDto error = MessageDto.builder().code(ex.getCode()).message(ex.getMessage()).build();
+        return new ResponseEntity<>(error, ex.getHttpStatus());
+    }
+    @ExceptionHandler(value = AuthenticationException.class)
+    public ResponseEntity<MessageDto> authenticationException(AuthenticationException ex) {
         MessageDto error = MessageDto.builder().code(ex.getCode()).message(ex.getMessage()).build();
         return new ResponseEntity<>(error, ex.getHttpStatus());
     }
