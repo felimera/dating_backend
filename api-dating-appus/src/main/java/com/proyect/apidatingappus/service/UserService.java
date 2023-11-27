@@ -4,7 +4,7 @@ import com.proyect.apidatingappus.model.User;
 
 public interface UserService {
 
-    User putUser(User user);
+    User putUser(Long id, User user);
 
     User findById(Long idUser);
 

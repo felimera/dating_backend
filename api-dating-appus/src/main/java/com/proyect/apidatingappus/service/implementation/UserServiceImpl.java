@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User putUser(User user) {
-        User entity = userRepository.findOneByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException(Constants.MESSAGE_USER_NOT_FOUND));
+    public User putUser(Long id,User user) {
+        User entity = userRepository.findById(id).orElseThrow(() -> new RuntimeException(Constants.MESSAGE_USER_NOT_FOUND));
         entity.setName(user.getName());
         entity.setEmail(user.getEmail());
         return userRepository.save(entity);
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isExistUser(String email) {
         Optional<User> userOptional = userRepository.findOneByEmail(email);
-        if (!userOptional.isPresent())
+        if (userOptional.isEmpty())
             throw new NotFoundException(Constants.MESSAGE_USER_NOT_FOUND, "415", HttpStatus.NOT_FOUND);
         return true;
     }
