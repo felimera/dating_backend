@@ -1,5 +1,6 @@
 package com.proyect.apidatingappus.service;
 
+import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.controller.dto.table.AppResponseTable;
 import com.proyect.apidatingappus.model.Appointment;
 import org.springframework.stereotype.Service;
@@ -24,4 +25,6 @@ public interface AppointmentService {
     Appointment putAssignmentInAppointment(Long id, List<Long> idAssignments, Long idCustomer);
 
     boolean deleteAppEditAssignment(Long idCustomer, LocalDate fecha, Long idAssignment);
+
+    List<AppResponseTable> getConsultQuoteWithAnyFilters(AppointmentSearchParametersDto parametersDto);
 }
