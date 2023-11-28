@@ -2,6 +2,7 @@ package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.AppointmentDto;
 import com.proyect.apidatingappus.controller.dto.MessageDto;
+import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.controller.mapper.AppointmentMapper;
 import com.proyect.apidatingappus.exception.precondition.PreconditionsAppointment;
 import com.proyect.apidatingappus.model.Appointment;
@@ -18,8 +19,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "api/appointment")
 public class AppointmentController {
+    private AppointmentService appointmentService;
+
     @Autowired
-    AppointmentService appointmentService;
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
+    }
 
     @GetMapping(path = "/all")
     public ResponseEntity<Object> getAll() {
@@ -74,5 +79,10 @@ public class AppointmentController {
         if (appointmentService.deleteAppEditAssignment(appointmentDto.getIdCustomer(), LocalDate.parse(appointmentDto.getFecha()), appointmentDto.getIdAssignment()))
             return ResponseEntity.ok(MessageDto.builder().message("Registro retirado con exito.").code("201").build());
         return ResponseEntity.internalServerError().body(MessageDto.builder().message("Registro no logro ser eliminado.").code("501").build());
+    }
+
+    @GetMapping(path = "/anyfilter")
+    public ResponseEntity<Object> getConsultQuoteWithAnyFilters(@RequestBody(required = false) AppointmentSearchParametersDto dto) {
+        return ResponseEntity.ok(appointmentService.getConsultQuoteWithAnyFilters(dto));
     }
 }
