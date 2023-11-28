@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long>, AppointmentReportRepository {
-    @Query("select ap from Appointment ap inner join Customer cu on ap.customer.id = cu.id where cu.id = :idCustomer ")
+    @Query("select ap from Appointment ap inner join Customer cu on ap.customer.id = cu.id where cu.id = :idCustomer  and ap.valid = 'T' ")
     List<Appointment> findAllByIdCustomer(Long idCustomer);
 }

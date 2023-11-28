@@ -17,6 +17,7 @@ public class AppointmentBuilder {
     private Long totalPrice;
     private Customer customer;
     private Assignment assignment;
+    private String valid;
 
     private AppointmentBuilder toAppointmentBuilder() {
         return AppointmentBuilder.builder()
@@ -26,26 +27,27 @@ public class AppointmentBuilder {
                 .totalPrice(125L)
                 .customer(null)
                 .assignment(null)
+                .valid("T")
                 .build();
     }
 
     public Appointment toAppointment() {
         AppointmentBuilder builder = toAppointmentBuilder();
-        return new Appointment(builder.id, builder.date, builder.time, builder.totalPrice, builder.customer, builder.assignment);
+        return new Appointment(builder.id, builder.date, builder.time, builder.totalPrice, builder.customer, builder.assignment, builder.valid);
     }
 
     public Appointment toEditId(Long id) {
         AppointmentBuilder builder = toAppointmentBuilder();
-        return new Appointment(id, builder.date, builder.time, builder.totalPrice, builder.customer, builder.assignment);
+        return new Appointment(id, builder.date, builder.time, builder.totalPrice, builder.customer, builder.assignment, builder.valid);
     }
 
     public Appointment toEditDate(LocalDate date) {
         AppointmentBuilder builder = toAppointmentBuilder();
-        return new Appointment(builder.id, date, builder.time, builder.totalPrice, builder.customer, builder.assignment);
+        return new Appointment(builder.id, date, builder.time, builder.totalPrice, builder.customer, builder.assignment, builder.valid);
     }
 
     public Appointment toEditCustomerAndAssignment(Customer customer, Assignment assignment) {
         AppointmentBuilder builder = toAppointmentBuilder();
-        return new Appointment(builder.id, builder.date, builder.time, builder.totalPrice, customer, assignment);
+        return new Appointment(builder.id, builder.date, builder.time, builder.totalPrice, customer, assignment, builder.valid);
     }
 }

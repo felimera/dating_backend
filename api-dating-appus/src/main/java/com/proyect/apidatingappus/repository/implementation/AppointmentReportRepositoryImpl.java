@@ -28,6 +28,8 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
         Join<Appointment, Customer> appointmentCustomerJoin = appointmentRoot.join("customer", JoinType.INNER);
         Join<Appointment, Assignment> appointmentAssignmentJoin = appointmentRoot.join("assignment", JoinType.INNER);
 
+        predicates.add(cb.equal(appointmentRoot.get("valid"), "T"));
+
         if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
             predicates.add(cb.equal(appointmentCustomerJoin.get("id"), appointmentSearchParametersDto.getIdCustomer()));
 
