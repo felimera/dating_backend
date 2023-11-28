@@ -14,8 +14,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class AppointmentReportRepositoryImpl implements AppointmentReportRepository {
-    @Autowired
+
     private EntityManager em;
+
+    private static final String VALID = "valid";
+
+    @Autowired
+    public AppointmentReportRepositoryImpl(EntityManager em) {
+        this.em = em;
+    }
 
     @Override
     public List<Appointment> getAppointmentListByParameter(AppointmentSearchParametersDto appointmentSearchParametersDto) {
@@ -28,7 +35,43 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
         Join<Appointment, Customer> appointmentCustomerJoin = appointmentRoot.join("customer", JoinType.INNER);
         Join<Appointment, Assignment> appointmentAssignmentJoin = appointmentRoot.join("assignment", JoinType.INNER);
 
-        predicates.add(cb.equal(appointmentRoot.get("valid"), "T"));
+        predicates.add(cb.equal(appointmentRoot.get(VALID), "T"));
+
+        if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
+            predicates.add(cb.equal(appointmentCustomerJoin.get("id"), appointmentSearchParametersDto.getIdCustomer()));
+
+        if (Objects.nonNull(appointmentSearchParametersDto.getFechaInicio()) && Objects.nonNull(appointmentSearchParametersDto.getFechaFin()))
+            predicates.add(cb.between(appointmentRoot.get("date"), appointmentSearchParametersDto.getFechaInicio(), appointmentSearchParametersDto.getFechaFin()));
+
+        if (Objects.nonNull(appointmentSearchParametersDto.getFecha()))
+            predicates.add(cb.equal(appointmentRoot.get("date"), appointmentSearchParametersDto.getFecha()));
+
+        if (Objects.nonNull(appointmentSearchParametersDto.getIdAssignment()))
+            predicates.add(cb.equal(appointmentAssignmentJoin.get("id"), appointmentSearchParametersDto.getIdAssignment()));
+
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public List<Appointment> getConsultQuoteWithAnyFilters(AppointmentSearchParametersDto appointmentSearchParametersDto) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Appointment> cq = cb.createQuery(Appointment.class);
+
+        Root<Appointment> appointmentRoot = cq.from(Appointment.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        Join<Appointment, Customer> appointmentCustomerJoin = appointmentRoot.join("customer", JoinType.INNER);
+        Join<Appointment, Assignment> appointmentAssignmentJoin = appointmentRoot.join("assignment", JoinType.INNER);
+
+        if (Objects.nonNull(appointmentSearchParametersDto.getValid())) {
+            if (appointmentSearchParametersDto.getValid().equals("T"))
+                predicates.add(cb.equal(appointmentRoot.get(VALID), "T"));
+            else if (appointmentSearchParametersDto.getValid().equals("F")) {
+                predicates.add(cb.equal(appointmentRoot.get(VALID), "F"));
+            }
+        }
 
         if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
             predicates.add(cb.equal(appointmentCustomerJoin.get("id"), appointmentSearchParametersDto.getIdCustomer()));

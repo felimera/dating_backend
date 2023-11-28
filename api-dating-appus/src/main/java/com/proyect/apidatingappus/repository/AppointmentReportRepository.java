@@ -8,4 +8,6 @@ import java.util.List;
 public interface AppointmentReportRepository {
 
     List<Appointment> getAppointmentListByParameter(AppointmentSearchParametersDto appointmentSearchParametersDto);
+
+    List<Appointment> getConsultQuoteWithAnyFilters(AppointmentSearchParametersDto appointmentSearchParametersDto);
 }
