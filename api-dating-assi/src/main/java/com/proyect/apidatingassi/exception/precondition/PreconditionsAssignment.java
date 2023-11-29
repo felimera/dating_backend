@@ -1,7 +1,8 @@
-package com.proyect.apidatingassi.util;
+package com.proyect.apidatingassi.exception.precondition;
 
 import com.proyect.apidatingassi.controller.dto.AssignmentParameter;
 import com.proyect.apidatingassi.exception.RequestException;
+import com.proyect.apidatingassi.util.NumberUtil;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
