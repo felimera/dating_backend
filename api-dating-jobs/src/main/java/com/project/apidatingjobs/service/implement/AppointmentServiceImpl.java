@@ -21,7 +21,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void statusChangeAppointment() {
         List<Appointment> appointmentList = appointmentRepository.getOldRecords();
-        appointmentList.forEach(appointment -> appointment.setValid(Constants.F));
+        appointmentList.forEach(appointment -> appointment.setValid(Constants.V));
         appointmentRepository.saveAll(appointmentList);
     }
 }
