@@ -6,5 +6,5 @@ public class Constants {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String F = "F";
+    public static final String V = "V";
 }
