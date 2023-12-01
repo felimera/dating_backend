@@ -10,6 +10,7 @@ import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,12 +68,15 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
 
         if (Objects.nonNull(appointmentSearchParametersDto.getValid())) {
             if (appointmentSearchParametersDto.getValid().equals("T"))
-                predicates.add(cb.equal(appointmentRoot.get(VALID), "T"));
-            else if (appointmentSearchParametersDto.getValid().equals("F")) {
-                predicates.add(cb.equal(appointmentRoot.get(VALID), "F"));
-            }
+                predicates.add(cb.in(appointmentRoot.get(VALID)).value(Arrays.asList("T", "A", "V")));
+            else
+                predicates.add(cb.equal(appointmentRoot.get(VALID), appointmentSearchParametersDto.getValid()));
         }
 
+        if (Objects.nonNull(appointmentSearchParametersDto.getNameCustomer())) {
+            Expression<String> fullName = cb.upper(cb.concat(appointmentCustomerJoin.get("firtName"), appointmentCustomerJoin.get("lastName")));
+            predicates.add(cb.like(fullName, "%" + appointmentSearchParametersDto.getNameCustomer().toLowerCase() + "%"));
+        }
         if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
             predicates.add(cb.equal(appointmentCustomerJoin.get("id"), appointmentSearchParametersDto.getIdCustomer()));
 
