@@ -31,5 +31,5 @@ public class Appointment {
     private Assignment assignment;
     @Column(name = "app_valid")
     @Builder.Default
-    private String valid = "T";
+    private String valid = "A";
 }
