@@ -14,5 +14,7 @@ public class AppResponseTable {
     private String horaSinFor;
     private String precioTotal;
     private List<ContentTable> contentTableList;
-
+    private String idMonth;
+    private String month;
+    private String fillNameCustomer;
 }
