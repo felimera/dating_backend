@@ -1,6 +1,8 @@
 package com.proyect.apidatingappus.service.implementation;
 
+import com.proyect.apidatingappus.controller.dto.search.CustomerSearchParameterDto;
 import com.proyect.apidatingappus.exception.BusinessException;
+import com.proyect.apidatingappus.exception.NotFoundException;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.repository.CustomerRepository;
@@ -78,5 +80,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getByEmail(String email) {
         return customerRepository.findByEmail(email).orElseThrow(() -> new BusinessException("201", HttpStatus.NOT_FOUND, Constants.MESSAGE_USER_NOT_FOUND));
+    }
+
+    @Override
+    public List<Customer> getConsultCustomerForVariousParameters(CustomerSearchParameterDto dto) {
+        List<Customer> customers = customerRepository.getConsultCustomerForVariousParameters(dto);
+        if (customers.isEmpty())
+            throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "301", HttpStatus.NOT_FOUND);
+        return customers;
     }
 }

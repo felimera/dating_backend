@@ -82,9 +82,13 @@ public class AppointmentController {
     }
 
     @GetMapping(path = "/anyfilter")
-    public ResponseEntity<Object> getConsultQuoteWithAnyFilters(@RequestParam(name = "valid", required = false) String valid) {
+    public ResponseEntity<Object> getConsultQuoteWithAnyFilters(
+            @RequestParam(name = "valid", required = false) String valid,
+            @RequestParam(name = "nameCustomer", required = false) String nameCustomer
+    ) {
         AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
         dto.setValid(valid);
+        dto.setNameCustomer(nameCustomer);
         return ResponseEntity.ok(appointmentService.getConsultQuoteWithAnyFilters(dto));
     }
 }

@@ -1,5 +1,6 @@
 package com.proyect.apidatingappus.service;
 
+import com.proyect.apidatingappus.controller.dto.search.CustomerSearchParameterDto;
 import com.proyect.apidatingappus.model.Customer;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +17,6 @@ public interface CustomerService {
     Customer getById(Long id);
 
     Customer getByEmail(String email);
+
+    List<Customer> getConsultCustomerForVariousParameters(CustomerSearchParameterDto dto);
 }

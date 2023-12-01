@@ -2,6 +2,7 @@ package com.proyect.apidatingappus.controller;
 
 import com.proyect.apidatingappus.controller.dto.CustomerDto;
 import com.proyect.apidatingappus.controller.dto.auth.LoginRequest;
+import com.proyect.apidatingappus.controller.dto.search.CustomerSearchParameterDto;
 import com.proyect.apidatingappus.controller.mapper.CustomerMapper;
 import com.proyect.apidatingappus.exception.precondition.PreconditionsCustomer;
 import com.proyect.apidatingappus.model.Customer;
@@ -65,5 +66,19 @@ public class CustomerController {
         PreconditionsCustomer.checkNullEmailField(email);
         Customer customer = customerService.getByEmail(email);
         return ResponseEntity.ok(CustomerMapper.INSTANCE.toDto(customer));
+    }
+
+    @GetMapping(value = "/anyfilter")
+    public ResponseEntity<Object> getConsultCustomerForVariousParameters(
+            @RequestParam(name = "id", required = false) Long id,
+            @RequestParam(name = "fillName", required = false) String fillName,
+            @RequestParam(name = "email", required = false) String email) {
+        CustomerSearchParameterDto dto = new CustomerSearchParameterDto();
+        dto.setId(id);
+        dto.setFillName(fillName);
+        dto.setEmail(email);
+        List<Customer> customerList = customerService.getConsultCustomerForVariousParameters(dto);
+        List<CustomerDto> customerDtoList = customerList.stream().map(CustomerMapper.INSTANCE::toDto).toList();
+        return ResponseEntity.ok(customerDtoList);
     }
 }
