@@ -9,6 +9,7 @@ import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.AppointmentService;
 import com.proyect.apidatingappus.service.AssignmentService;
+import com.proyect.apidatingappus.util.CadenaUtils;
 import com.proyect.apidatingappus.util.Constants;
 import com.proyect.apidatingappus.util.DateUtil;
 import com.proyect.apidatingappus.util.NumberUtils;
@@ -188,12 +189,15 @@ public class AppointmentServiceImpl implements AppointmentService {
                     AppResponseTable appResponseTable = new AppResponseTable();
                     appResponseTable.setFechaSinFor(element.getKey().toString());
                     appResponseTable.setFecha(getFechaHora(element.getKey(), element.getValue()));
+                    appResponseTable.setIdMonth(DateUtil.getIdMonthByLocalDate(element.getKey()));
+                    appResponseTable.setMonth(DateUtil.getMonthByLocalDate(element.getKey()));
 
                     List<ContentTable> contentTableList = new ArrayList<>();
                     for (Appointment appointment : element.getValue()) {
                         appResponseTable.setIdAppointment(appointment.getId());
                         appResponseTable.setPrecioTotal(NumberUtils.getFormaterPrice(appointment.getTotalPrice()));
                         appResponseTable.setHoraSinFor(appointment.getTime());
+                        appResponseTable.setFillNameCustomer(CadenaUtils.getFillNameCustomer(appointment.getCustomer()));
 
                         contentTableList.add(getContentTable(appointment));
                     }
