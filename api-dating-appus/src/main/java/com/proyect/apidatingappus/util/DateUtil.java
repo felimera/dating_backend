@@ -45,4 +45,14 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM' ' dd ' del 'yyyy' a las' hh:mm 'horas'.");
         return CadenaUtils.toMayusculas(localDateTime.format(formatter));
     }
+
+    public static String getIdMonthByLocalDate(LocalDate fecha) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M");
+        return fecha.format(formatter);
+    }
+
+    public static String getMonthByLocalDate(LocalDate fecha) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM");
+        return fecha.format(formatter);
+    }
 }
