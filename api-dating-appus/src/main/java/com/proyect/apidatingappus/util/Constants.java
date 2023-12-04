@@ -2,6 +2,7 @@ package com.proyect.apidatingappus.util;
 
 public class Constants {
 
+
     private Constants() {
         throw new IllegalStateException("Utility class");
     }
@@ -16,7 +17,7 @@ public class Constants {
     public static final String EXTENSION_XLS = ".xls";
 
     public static final String AMPERSAND = "&";
-
+    public static final String A = "A";
     public static final String MESSAGE_NOT_FOUND = "No results were found.";
     public static final String MESSAGE_USER_NOT_FOUND = "The user does not exist.";
 }
