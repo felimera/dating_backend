@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -94,7 +95,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void deleteAppointment(Long id) {
         Appointment entity = appointmentRepository.findById(id).orElseThrow(() -> new RuntimeException("This quote does not exist."));
-        appointmentRepository.delete(entity);
+
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
+        dto.setIdCustomer(entity.getCustomer().getId());
+        dto.setFecha(entity.getDate());
+
+        List<Appointment> appointmentList = appointmentRepository.getConsultQuoteWithAnyFilters(dto);
+        if (appointmentList.isEmpty())
+            throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
+
+        appointmentRepository.deleteAll(appointmentList);
     }
 
     @Override
@@ -179,34 +189,63 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (appointmentList.isEmpty())
             throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
 
-        Map<LocalDate, List<Appointment>> appoinmentMap = appointmentList.stream().collect(Collectors.groupingBy(Appointment::getDate));
+        Map<LocalDate, Map<Long, List<Appointment>>> appoinmentMapMap = appointmentList.stream().collect(Collectors.groupingBy(Appointment::getDate, Collectors.groupingBy(elem -> elem.getCustomer().getId())));
 
-        appoinmentMap
-                .entrySet()
+        appoinmentMapMap
+                .forEach((key, value) -> value
+                        .entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .forEach(app -> {
+                            AppResponseTable appResponseTable = new AppResponseTable();
+                            List<ContentTable> contentTableList = new ArrayList<>();
+
+                            appResponseTable.setFechaSinFor(key.toString());
+                            appResponseTable.setIdMonth(DateUtil.getIdMonthByLocalDate(key));
+                            appResponseTable.setMonth(DateUtil.getMonthByLocalDate(key));
+                            appResponseTable.setFecha(getFechaHora(key, app.getValue()));
+                            for (Appointment appointment : app.getValue()) {
+                                appResponseTable.setIdAppointment(appointment.getId());
+                                appResponseTable.setPrecioTotal(NumberUtils.getFormaterPrice(appointment.getTotalPrice()));
+                                appResponseTable.setHoraSinFor(appointment.getTime());
+                                appResponseTable.setFillNameCustomer(CadenaUtils.getFillNameCustomer(appointment.getCustomer()));
+                                appResponseTable.setIdCustomer(appointment.getCustomer().getId());
+
+                                contentTableList.add(getContentTable(appointment));
+                            }
+                            appResponseTable.setContentTableList(contentTableList);
+                            list.add(appResponseTable);
+                        }));
+        return list
                 .stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(element -> {
-                    AppResponseTable appResponseTable = new AppResponseTable();
-                    appResponseTable.setFechaSinFor(element.getKey().toString());
-                    appResponseTable.setFecha(getFechaHora(element.getKey(), element.getValue()));
-                    appResponseTable.setIdMonth(DateUtil.getIdMonthByLocalDate(element.getKey()));
-                    appResponseTable.setMonth(DateUtil.getMonthByLocalDate(element.getKey()));
+                .sorted(Comparator.
+                        comparing(AppResponseTable::getFechaSinFor)
+                        .thenComparing(AppResponseTable::getHoraSinFor)
+                        .thenComparing(AppResponseTable::getFillNameCustomer))
+                .toList();
+    }
 
-                    List<ContentTable> contentTableList = new ArrayList<>();
-                    for (Appointment appointment : element.getValue()) {
-                        appResponseTable.setIdAppointment(appointment.getId());
-                        appResponseTable.setPrecioTotal(NumberUtils.getFormaterPrice(appointment.getTotalPrice()));
-                        appResponseTable.setHoraSinFor(appointment.getTime());
-                        appResponseTable.setFillNameCustomer(CadenaUtils.getFillNameCustomer(appointment.getCustomer()));
+    @Override
+    public Appointment putAdminAppointment(Long id, Long idCustomer, Long idAssignment, Appointment entityNew) {
 
-                        contentTableList.add(getContentTable(appointment));
-                    }
-                    appResponseTable.setContentTableList(contentTableList);
+        Appointment entityOld = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND));
 
-                    list.add(appResponseTable);
-                });
+        AppointmentSearchParametersDto dto = new AppointmentSearchParametersDto();
+        dto.setIdCustomer(idCustomer);
+        dto.setFecha(entityOld.getDate());
 
-        return list;
+        List<Appointment> appointmentList = appointmentRepository.getConsultQuoteWithAnyFilters(dto);
+        if (appointmentList.isEmpty())
+            throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "601", HttpStatus.NOT_FOUND);
+
+        appointmentList.forEach(appOld -> {
+            appOld.setDate(entityNew.getDate());
+            appOld.setTime(entityNew.getTime());
+            appOld.setTotalPrice(entityNew.getTotalPrice());
+            appOld.setValid(Constants.A);
+        });
+
+        return appointmentRepository.saveAll(appointmentList).stream().findFirst().orElseThrow();
     }
 
     private static String getFechaHora(LocalDate key, List<Appointment> value) {
