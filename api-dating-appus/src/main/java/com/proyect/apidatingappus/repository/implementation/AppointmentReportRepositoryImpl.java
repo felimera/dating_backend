@@ -5,6 +5,7 @@ import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.model.Assignment;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.repository.AppointmentReportRepository;
+import com.proyect.apidatingappus.util.Constants;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
         Join<Appointment, Customer> appointmentCustomerJoin = appointmentRoot.join("customer", JoinType.INNER);
         Join<Appointment, Assignment> appointmentAssignmentJoin = appointmentRoot.join("assignment", JoinType.INNER);
 
-        predicates.add(cb.equal(appointmentRoot.get(VALID), "T"));
+        predicates.add(cb.equal(appointmentRoot.get(VALID), Constants.A));
 
         if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
             predicates.add(cb.equal(appointmentCustomerJoin.get("id"), appointmentSearchParametersDto.getIdCustomer()));
@@ -74,7 +75,7 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
         }
 
         if (Objects.nonNull(appointmentSearchParametersDto.getNameCustomer())) {
-            Expression<String> fullName = cb.upper(cb.concat(appointmentCustomerJoin.get("firtName"), appointmentCustomerJoin.get("lastName")));
+            Expression<String> fullName = cb.upper(cb.concat(cb.concat(appointmentCustomerJoin.get("firtName"), Constants.SPACE), appointmentCustomerJoin.get("lastName")));
             predicates.add(cb.like(fullName, "%" + appointmentSearchParametersDto.getNameCustomer().toLowerCase() + "%"));
         }
         if (Objects.nonNull(appointmentSearchParametersDto.getIdCustomer()))
