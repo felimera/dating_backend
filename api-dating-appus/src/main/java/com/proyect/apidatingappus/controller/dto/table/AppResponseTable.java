@@ -17,4 +17,5 @@ public class AppResponseTable {
     private String idMonth;
     private String month;
     private String fillNameCustomer;
+    private Long idCustomer;
 }
