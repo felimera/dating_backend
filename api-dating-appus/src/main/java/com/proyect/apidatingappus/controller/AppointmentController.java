@@ -53,7 +53,7 @@ public class AppointmentController {
     @DeleteMapping(value = "/{idAppointment}")
     public ResponseEntity<Object> deleteAppointment(@PathVariable(name = "idAppointment") Long idAppointment) {
         appointmentService.deleteAppointment(idAppointment);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(MessageDto.builder().message("Registro eliminado con exito.").code("201").build());
     }
 
     @GetMapping(path = "/customer")
@@ -90,5 +90,12 @@ public class AppointmentController {
         dto.setValid(valid);
         dto.setNameCustomer(nameCustomer);
         return ResponseEntity.ok(appointmentService.getConsultQuoteWithAnyFilters(dto));
+    }
+
+    @PutMapping(value = "/admin/{idAppointment}")
+    public ResponseEntity<Object> putAdminAppointment(@PathVariable(name = "idAppointment") Long idAppointment, @RequestBody AppointmentDto appointmentDto) {
+        PreconditionsAppointment.checkFieldsWithoutCustomerIdAndAssignmentId(appointmentDto);
+        Appointment appointment = appointmentService.putAdminAppointment(idAppointment, appointmentDto.getIdCustomer(), appointmentDto.getIdAssignment(), AppointmentMapper.INSTANCE.toEntity(appointmentDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(AppointmentMapper.INSTANCE.toDto(appointment));
     }
 }
