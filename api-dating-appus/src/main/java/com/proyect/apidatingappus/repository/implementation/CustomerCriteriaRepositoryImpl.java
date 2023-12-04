@@ -4,6 +4,7 @@ import com.proyect.apidatingappus.controller.dto.search.CustomerSearchParameterD
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.model.complement.Rol;
 import com.proyect.apidatingappus.repository.CustomerCriteriaRepository;
+import com.proyect.apidatingappus.util.Constants;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CustomerCriteriaRepositoryImpl implements CustomerCriteriaRepositor
             predicates.add(cb.equal(customerRoot.get("id"), dto.getId()));
 
         if (Objects.nonNull(dto.getFillName())) {
-            Expression<String> nameExpression = cb.upper(cb.concat(customerRoot.get("firtName"), customerRoot.get("lastName")));
+            Expression<String> nameExpression = cb.upper(cb.concat(cb.concat(customerRoot.get("firtName"), Constants.SPACE), customerRoot.get("lastName")));
             String nombreParameter = "%".concat(dto.getFillName().toUpperCase()).concat("%");
             predicates.add(cb.like(nameExpression, nombreParameter));
         }
