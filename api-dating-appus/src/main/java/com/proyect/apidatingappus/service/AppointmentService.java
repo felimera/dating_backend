@@ -27,4 +27,6 @@ public interface AppointmentService {
     boolean deleteAppEditAssignment(Long idCustomer, LocalDate fecha, Long idAssignment);
 
     List<AppResponseTable> getConsultQuoteWithAnyFilters(AppointmentSearchParametersDto parametersDto);
+
+    Appointment putAdminAppointment(Long id, Long idCustomer, Long idAssignment, Appointment entityNew);
 }
