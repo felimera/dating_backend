@@ -1,12 +1,12 @@
 package com.proyect.apidatingappus.service.report.implementation;
 
+import com.proyect.apidatingappus.controller.dto.entityreport.AssignmentTableReportDto;
+import com.proyect.apidatingappus.controller.dto.entityreport.DatingReportDto;
 import com.proyect.apidatingappus.controller.dto.search.AppointmentSearchParametersDto;
 import com.proyect.apidatingappus.exception.RequestException;
 import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.model.Assignment;
 import com.proyect.apidatingappus.model.Customer;
-import com.proyect.apidatingappus.controller.dto.entityreport.AssignmentTableReportDto;
-import com.proyect.apidatingappus.controller.dto.entityreport.DatingReportDto;
 import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.service.report.DatingReportByService;
 import com.proyect.apidatingappus.util.DateUtil;
@@ -23,15 +23,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class DatingReportByServiceImpl implements DatingReportByService {
+    private AppointmentRepository appointmentRepository;
+
     @Autowired
-    AppointmentRepository appointmentRepository;
+    public DatingReportByServiceImpl(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     private static void getDataClient(Customer customer, DatingReportDto datingReportDto) {
         datingReportDto.setCustomerName(customer.getFirtName() + " " + customer.getLastName());
@@ -41,12 +43,17 @@ public class DatingReportByServiceImpl implements DatingReportByService {
 
     private List<DatingReportDto> getDatingReportList(List<Appointment> appointmentList) {
 
-        Map<LocalDate, List<Appointment>> appointmentListMap = appointmentList.stream().collect(Collectors.groupingBy(Appointment::getDate));
-        return appointmentListMap
-                .entrySet()
+        List<DatingReportDto> datingReportDtoList = new ArrayList<>();
+        Map<Long, Map<LocalDate, List<Appointment>>> appointmentListMapMap = appointmentList.stream().collect(Collectors.groupingBy(app -> app.getCustomer().getId(), Collectors.groupingBy(Appointment::getDate)));
+        appointmentListMapMap
+                .forEach((key, value) -> value.entrySet()
+                        .forEach(localDateListEntry -> datingReportDtoList.add(getDatingReport(localDateListEntry))));
+        return datingReportDtoList
                 .stream()
-                .sorted(Map.Entry.comparingByKey())
-                .map(DatingReportByServiceImpl::getDatingReport)
+                .sorted(Comparator
+                        .comparing(DatingReportDto::getConsultationDate)
+                        .thenComparing(DatingReportDto::getConsultationTime)
+                        .thenComparing(DatingReportDto::getCustomerName))
                 .toList();
     }
 
