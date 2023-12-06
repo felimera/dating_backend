@@ -81,4 +81,15 @@ public class CustomerController {
         List<CustomerDto> customerDtoList = customerList.stream().map(CustomerMapper.INSTANCE::toDto).toList();
         return ResponseEntity.ok(customerDtoList);
     }
+
+    @GetMapping(value = "/anyfilter/aforementioned")
+    public ResponseEntity<Object> getConsultCustomerInAppointmentForVariousParameters(
+            @RequestParam(name = "nameCustomer") String nameCustomer
+    ) {
+        CustomerSearchParameterDto dto = new CustomerSearchParameterDto();
+        dto.setFillName(nameCustomer);
+        List<Customer> customerList = customerService.getConsultCustomerInAppointmentForVariousParameters(dto);
+        List<CustomerDto> customerDtoList = customerList.stream().map(CustomerMapper.INSTANCE::toDto).toList();
+        return ResponseEntity.ok(customerDtoList);
+    }
 }

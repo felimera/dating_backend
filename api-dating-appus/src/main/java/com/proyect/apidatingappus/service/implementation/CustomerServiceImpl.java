@@ -3,8 +3,10 @@ package com.proyect.apidatingappus.service.implementation;
 import com.proyect.apidatingappus.controller.dto.search.CustomerSearchParameterDto;
 import com.proyect.apidatingappus.exception.BusinessException;
 import com.proyect.apidatingappus.exception.NotFoundException;
+import com.proyect.apidatingappus.model.Appointment;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.model.User;
+import com.proyect.apidatingappus.repository.AppointmentRepository;
 import com.proyect.apidatingappus.repository.CustomerRepository;
 import com.proyect.apidatingappus.service.CustomerService;
 import com.proyect.apidatingappus.service.UserService;
@@ -23,10 +25,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     private UserService userService;
 
+    private AppointmentRepository appointmentRepository;
+
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, UserService userService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, UserService userService, AppointmentRepository appointmentRepository) {
         this.customerRepository = customerRepository;
         this.userService = userService;
+        this.appointmentRepository = appointmentRepository;
     }
 
     @Override
@@ -88,5 +93,18 @@ public class CustomerServiceImpl implements CustomerService {
         if (customers.isEmpty())
             throw new NotFoundException(Constants.MESSAGE_NOT_FOUND, "301", HttpStatus.NOT_FOUND);
         return customers;
+    }
+
+    @Override
+    public List<Customer> getConsultCustomerInAppointmentForVariousParameters(CustomerSearchParameterDto dto) {
+        List<Customer> customerList = appointmentRepository
+                .getConsultCustomerInAppointmentForVariousParameters(dto)
+                .stream()
+                .map(Appointment::getCustomer)
+                .distinct()
+                .toList();
+        if (customerList.isEmpty())
+            throw new NotFoundException(Constants.MESSAGE_USER_NOT_FOUND, "701", HttpStatus.NOT_FOUND);
+        return customerList;
     }
 }

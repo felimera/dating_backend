@@ -19,4 +19,6 @@ public interface CustomerService {
     Customer getByEmail(String email);
 
     List<Customer> getConsultCustomerForVariousParameters(CustomerSearchParameterDto dto);
+
+    List<Customer> getConsultCustomerInAppointmentForVariousParameters(CustomerSearchParameterDto dto);
 }
