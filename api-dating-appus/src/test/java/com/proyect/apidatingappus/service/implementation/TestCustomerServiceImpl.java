@@ -3,6 +3,7 @@ package com.proyect.apidatingappus.service.implementation;
 import com.proyect.apidatingappus.exception.BusinessException;
 import com.proyect.apidatingappus.model.Customer;
 import com.proyect.apidatingappus.model.User;
+import com.proyect.apidatingappus.model.complement.Rol;
 import com.proyect.apidatingappus.model.entitytest.CustomerBuilder;
 import com.proyect.apidatingappus.model.entitytest.UserBuilder;
 import com.proyect.apidatingappus.repository.CustomerRepository;
@@ -104,7 +105,7 @@ class TestCustomerServiceImpl {
         given(userService.putUser(anyLong(), any())).willReturn(user);
         customer.setBirthdate(LocalDate.now().plusMonths(5));
         customer.setEmail("nombre@nombre.com");
-        Customer putCustomer = customerServiceImpl.putCustomer(anyLong(), customer);
+        Customer putCustomer = customerServiceImpl.putCustomer(anyLong(), customer, Rol.U.name());
         assertThat(putCustomer).isNotNull();
         assertThat(putCustomer.getBirthdate()).isEqualTo(LocalDate.now().plusMonths(5));
         assertThat(putCustomer.getEmail()).isEqualTo("nombre@nombre.com");
@@ -114,7 +115,7 @@ class TestCustomerServiceImpl {
     @Test
     void when_the_customer_id_returns_no_results() {
         given(customerRepository.findById(anyLong())).willReturn(Optional.empty());
-        assertThrows(RuntimeException.class, () -> customerServiceImpl.putCustomer(anyLong(), customer));
+        assertThrows(RuntimeException.class, () -> customerServiceImpl.putCustomer(anyLong(), customer, Rol.U.name()));
         verify(customerRepository, never()).save(any(Customer.class));
     }
 
