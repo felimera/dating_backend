@@ -23,5 +23,4 @@ public class TipoRole {
     private String acronym;
     @Column(name = "tr_description")
     private String description;
-
 }
