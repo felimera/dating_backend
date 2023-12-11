@@ -1,6 +1,7 @@
 package com.proyect.apidatingappus.model.entitytest;
 
 import com.proyect.apidatingappus.model.Customer;
+import com.proyect.apidatingappus.model.TipoRole;
 import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.model.complement.Gender;
 import com.proyect.apidatingappus.model.complement.Rol;
@@ -22,6 +23,7 @@ public class CustomerBuilder {
     private Gender gender;
     private LocalDate birthdate;
     private User user;
+    private TipoRole tipoRole;
 
     private CustomerBuilder toCustomerBuilder() {
         return CustomerBuilder.builder()
@@ -34,16 +36,17 @@ public class CustomerBuilder {
                 .gender(Gender.M)
                 .birthdate(LocalDate.now().minusYears(18))
                 .user(null)
+                .tipoRole(null)
                 .build();
     }
 
     public Customer toCustomer() {
         CustomerBuilder builder = toCustomerBuilder();
-        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.rol, builder.gender, builder.birthdate, builder.user);
+        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.gender, builder.birthdate, builder.user, builder.tipoRole);
     }
 
     public Customer toEditUser(User user) {
         CustomerBuilder builder = toCustomerBuilder();
-        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.rol, builder.gender, builder.birthdate, user);
+        return new Customer(builder.id, builder.firtName, builder.lastName, builder.phone, builder.email, builder.gender, builder.birthdate, user, builder.tipoRole);
     }
 }
