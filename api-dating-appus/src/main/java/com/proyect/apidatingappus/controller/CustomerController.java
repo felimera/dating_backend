@@ -44,7 +44,7 @@ public class CustomerController {
     @PutMapping(value = "/{idCustomer}")
     public ResponseEntity<Object> putCustomer(@PathVariable(name = "idCustomer") Long idCustomer, @Validated @RequestBody CustomerDto customerDto) {
         PreconditionsCustomer.checkNullBodyField(customerDto);
-        Customer customer = customerService.putCustomer(idCustomer, CustomerMapper.INSTANCE.toEntity(customerDto));
+        Customer customer = customerService.putCustomer(idCustomer, CustomerMapper.INSTANCE.toEntity(customerDto), customerDto.getRol());
         CustomerDto dto = CustomerMapper.INSTANCE.toDto(customer);
 
         LoginRequest request = new LoginRequest();
