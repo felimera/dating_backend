@@ -17,15 +17,13 @@ public class AccessPermits {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ap_id")
     private Long id;
-    @Column(name = "ap_label")
-    private String label;
-    @Column(name = "ap_icon")
-    private String icon;
-    @Column(name = "ap_url")
-    private String url;
-    @Column(name = "ap_description")
-    private String description;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ap_router_link_id")
+    private RouterLink routerLink;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ap_tipo_role_id")
     private TipoRole tipoRole;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ap_user_id")
+    private User user;
 }
