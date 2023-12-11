@@ -1,8 +1,9 @@
-package com.proyect.apidatingappus.service;
+package com.proyect.apidatingappus.service.implementation;
 
 import com.proyect.apidatingappus.controller.dto.auth.LoginRequest;
 import com.proyect.apidatingappus.exception.AuthenticationException;
 import com.proyect.apidatingappus.exception.NotFoundException;
+import com.proyect.apidatingappus.service.LoginService;
 import com.proyect.apidatingappus.service.jwt.UserJwtServiceImpl;
 import com.proyect.apidatingappus.util.Constants;
 import com.proyect.apidatingappus.util.JwtUtil;
