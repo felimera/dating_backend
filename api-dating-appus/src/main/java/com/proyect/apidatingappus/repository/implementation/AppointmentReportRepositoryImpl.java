@@ -100,6 +100,7 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
 
         Root<Appointment> appointmentRoot = cq.from(Appointment.class);
         Join<Customer, Appointment> customerAppointmentJoin = appointmentRoot.join(Appointment_.CUSTOMER, JoinType.INNER);
+        Join<TipoRole, Customer> tipoRoleCustomerJoin = customerAppointmentJoin.join(Customer_.TIPO_ROLE, JoinType.INNER);
         List<Predicate> predicates = new ArrayList<>();
 
         if (Objects.nonNull(dto.getFillName())) {
@@ -109,7 +110,7 @@ public class AppointmentReportRepositoryImpl implements AppointmentReportReposit
         }
 
         if (!predicates.isEmpty()) {
-            predicates.add(cb.notEqual(customerAppointmentJoin.get(Customer_.ROL), Rol.A));
+            predicates.add(cb.notEqual(tipoRoleCustomerJoin.get(TipoRole_.ACRONYM), Rol.A.name()));
             cq.where(predicates.toArray(new Predicate[0]));
             cq.orderBy(cb.asc(customerAppointmentJoin.get(Customer_.FIRT_NAME)));
             return em.createQuery(cq).getResultList();
