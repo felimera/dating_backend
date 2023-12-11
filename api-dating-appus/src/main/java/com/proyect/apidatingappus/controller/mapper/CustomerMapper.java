@@ -20,7 +20,6 @@ public interface CustomerMapper {
     @Mapping(target = "correo", source = "email")
     @Mapping(target = "genero", expression = "java(getGender(customer))")
     @Mapping(target = "fechaNacimiento", source = "birthdate", dateFormat = Constants.DATE_FORMAT)
-    @Mapping(target = "rol", expression = "java(getRol(customer))")
     CustomerDto toDto(Customer customer);
 
     @InheritInverseConfiguration
@@ -29,9 +28,5 @@ public interface CustomerMapper {
 
     default String getGender(Customer customer) {
         return Objects.nonNull(customer.getGender()) && Objects.nonNull(customer.getGender().getName()) ? customer.getGender().getName() : "";
-    }
-
-    default String getRol(Customer customer) {
-        return Objects.nonNull(customer.getRol()) && Objects.nonNull(customer.getRol().getRole()) ? customer.getRol().getRole() : "";
     }
 }
