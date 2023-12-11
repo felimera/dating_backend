@@ -12,7 +12,7 @@ public interface CustomerService {
 
     Customer postCustomer(Customer customer, Long idUser);
 
-    Customer putCustomer(Long id, Customer customer);
+    Customer putCustomer(Long id, Customer customer, String rol);
 
     Customer getById(Long id);
 
