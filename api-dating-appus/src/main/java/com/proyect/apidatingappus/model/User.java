@@ -23,4 +23,7 @@ public class User {
     private String email;
     @Column(name = "us_password")
     private String password;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "us_access_permits_id")
+    private AccessPermits accessPermits;
 }

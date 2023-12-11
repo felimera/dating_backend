@@ -1,7 +1,6 @@
 package com.proyect.apidatingappus.model;
 
 import com.proyect.apidatingappus.model.complement.Gender;
-import com.proyect.apidatingappus.model.complement.Rol;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,9 +30,6 @@ public class Customer {
     private String phone;
     @Column(name = "cus_email")
     private String email;
-    @Column(name = "cus_rol")
-    @Enumerated(value = EnumType.STRING)
-    private Rol rol;
     @Column(name = "cus_gender")
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
@@ -42,4 +38,7 @@ public class Customer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cus_user_id")
     private User user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cus_tipo_role_id")
+    private TipoRole tipoRole;
 }
