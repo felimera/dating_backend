@@ -10,6 +10,7 @@ import com.proyect.apidatingappus.model.TipoRole;
 import com.proyect.apidatingappus.model.User;
 import com.proyect.apidatingappus.model.complement.Gender;
 import com.proyect.apidatingappus.repository.UserRepository;
+import com.proyect.apidatingappus.service.AccessPermitsService;
 import com.proyect.apidatingappus.service.AuthService;
 import com.proyect.apidatingappus.service.CustomerService;
 import com.proyect.apidatingappus.service.TipoRoleService;
@@ -28,13 +29,15 @@ public class AuthServiceImpl implements AuthService {
     PasswordEncoder passwordEncoder;
     CustomerService customerService;
     TipoRoleService tipoRoleService;
+    AccessPermitsService accessPermitsService;
 
     @Autowired
-    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CustomerService customerService, TipoRoleService tipoRoleService) {
+    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CustomerService customerService, TipoRoleService tipoRoleService, AccessPermitsService accessPermitsService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.customerService = customerService;
         this.tipoRoleService = tipoRoleService;
+        this.accessPermitsService = accessPermitsService;
     }
 
     @Override
@@ -53,8 +56,9 @@ public class AuthServiceImpl implements AuthService {
         String[] nombres = signUpDto.getNombres().split(Constants.AMPERSAND);
 
         Customer customer = getCustomer(signUpDto, nombres);
-
         customerService.postCustomer(customer, entity.getId());
+
+        accessPermitsService.postAccessPermits(entity.getId());
         return true;
     }
 
