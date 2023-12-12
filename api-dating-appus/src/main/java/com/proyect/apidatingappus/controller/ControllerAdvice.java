@@ -35,6 +35,7 @@ public class ControllerAdvice {
         MessageDto error = MessageDto.builder().code(ex.getCode()).message(ex.getMessage()).build();
         return new ResponseEntity<>(error, ex.getHttpStatus());
     }
+
     @ExceptionHandler(value = AuthenticationException.class)
     public ResponseEntity<MessageDto> authenticationException(AuthenticationException ex) {
         MessageDto error = MessageDto.builder().code(ex.getCode()).message(ex.getMessage()).build();
