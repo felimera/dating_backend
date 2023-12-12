@@ -6,6 +6,7 @@ import com.proyect.apidatingappus.controller.dto.search.CustomerSearchParameterD
 import com.proyect.apidatingappus.controller.mapper.CustomerMapper;
 import com.proyect.apidatingappus.exception.precondition.PreconditionsCustomer;
 import com.proyect.apidatingappus.model.Customer;
+import com.proyect.apidatingappus.model.complement.Rol;
 import com.proyect.apidatingappus.service.CustomerService;
 import com.proyect.apidatingappus.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,9 @@ public class CustomerController {
     public ResponseEntity<Object> getByEmail(@RequestParam(name = "email") String email) {
         PreconditionsCustomer.checkNullEmailField(email);
         Customer customer = customerService.getByEmail(email);
-        return ResponseEntity.ok(CustomerMapper.INSTANCE.toDto(customer));
+        CustomerDto dto=CustomerMapper.INSTANCE.toDto(customer);
+        dto.setRol(Rol.valueOf(customer.getTipoRole().getAcronym()).getRole());
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping(value = "/anyfilter")
@@ -78,7 +81,12 @@ public class CustomerController {
         dto.setFillName(fillName);
         dto.setEmail(email);
         List<Customer> customerList = customerService.getConsultCustomerForVariousParameters(dto);
-        List<CustomerDto> customerDtoList = customerList.stream().map(CustomerMapper.INSTANCE::toDto).toList();
+
+        List<CustomerDto> customerDtoList = customerList.stream().map(data->{
+            CustomerDto customerDto=CustomerMapper.INSTANCE.toDto(data);
+            customerDto.setRol(Rol.valueOf(data.getTipoRole().getAcronym()).getRole());
+            return customerDto;
+        }).toList();
         return ResponseEntity.ok(customerDtoList);
     }
 
