@@ -9,7 +9,9 @@ import com.proyect.apidatingappus.model.entitytest.ChangePassowrdDtoBuilder;
 import com.proyect.apidatingappus.model.entitytest.SignUpDtoBuider;
 import com.proyect.apidatingappus.model.entitytest.UserBuilder;
 import com.proyect.apidatingappus.repository.UserRepository;
+import com.proyect.apidatingappus.service.AccessPermitsService;
 import com.proyect.apidatingappus.service.CustomerService;
+import com.proyect.apidatingappus.service.TipoRoleService;
 import com.proyect.apidatingappus.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +41,10 @@ class TestAuthServiceImpl {
     JwtUtil jwtUtil;
     @Mock
     CustomerService customerService;
+    @Mock
+    AccessPermitsService accessPermitsService;
+    @Mock
+    TipoRoleService tipoRoleService;
     @InjectMocks
     AuthServiceImpl authServiceImpl;
 

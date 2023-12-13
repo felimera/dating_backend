@@ -7,6 +7,7 @@ import com.proyect.apidatingappus.model.complement.Rol;
 import com.proyect.apidatingappus.model.entitytest.CustomerBuilder;
 import com.proyect.apidatingappus.model.entitytest.UserBuilder;
 import com.proyect.apidatingappus.repository.CustomerRepository;
+import com.proyect.apidatingappus.service.TipoRoleService;
 import com.proyect.apidatingappus.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +37,8 @@ class TestCustomerServiceImpl {
     CustomerRepository customerRepository;
     @Mock
     UserService userService;
+    @Mock
+    TipoRoleService tipoRoleService;
     @InjectMocks
     CustomerServiceImpl customerServiceImpl;
     Customer customer;

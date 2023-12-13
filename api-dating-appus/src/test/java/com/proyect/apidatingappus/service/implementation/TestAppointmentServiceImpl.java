@@ -108,10 +108,14 @@ class TestAppointmentServiceImpl {
     @DisplayName("Test JUnit to delete a record in the deleteAppointment method.")
     @Test
     public void when_a_record_is_deleted_successfully() {
-        given(appointmentRepository.findById(anyLong())).willReturn(Optional.of(appointment));
-        willDoNothing().given(appointmentRepository).delete(appointment);
+        Customer customer = CustomerBuilder.builder().build().toCustomer();
+        Appointment appointmentTempl = AppointmentBuilder.builder().build().toEditCustomerAndAssignment(customer, null);
+
+        given(appointmentRepository.findById(anyLong())).willReturn(Optional.of(appointmentTempl));
+        given(appointmentRepository.getConsultQuoteWithAnyFilters(any(AppointmentSearchParametersDto.class))).willReturn(Arrays.asList(appointment, appointmentTempl));
+        willDoNothing().given(appointmentRepository).deleteAll(Arrays.asList(appointment, appointmentTempl));
         appointmentService.deleteAppointment(anyLong());
-        verify(appointmentRepository, times(1)).delete(appointment);
+        verify(appointmentRepository, times(1)).deleteAll(Arrays.asList(appointment, appointmentTempl));
     }
 
     @DisplayName("Test JUnit to validate existence of a record in PutAppointment.")
