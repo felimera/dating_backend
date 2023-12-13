@@ -4,16 +4,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtil {
     private DateUtil() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(DateUtil.class.toString());
     }
 
     public static boolean isValidateFormatDate(String fecha) {
         try {
             SimpleDateFormat formatoFecha = new SimpleDateFormat(Constants.DATE_FORMAT);
+            formatoFecha.setLenient(false);
+            formatoFecha.parse(fecha);
+        } catch (ParseException e) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isValidateEntryDate(String fecha) {
+        try {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD);
             formatoFecha.setLenient(false);
             formatoFecha.parse(fecha);
         } catch (ParseException e) {
@@ -54,5 +66,9 @@ public class DateUtil {
     public static String getMonthByLocalDate(LocalDate fecha) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM");
         return fecha.format(formatter);
+    }
+
+    public static String getHoursplusOne(String hora) {
+        return LocalTime.parse(hora).plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 }
