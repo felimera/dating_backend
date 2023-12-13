@@ -62,8 +62,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (DateUtil.isValidateOldDate(appointment.getDate())) {
             throw new BusinessException("301", HttpStatus.CONFLICT, "The date must be greater than the current date.");
         }
-
         List<Appointment> appointmentList = idList.stream().map(id -> getAppointment(appointment, id)).toList();
+        if (appointmentList.size() == 2) {
+            String appointmentTime = appointment.getTime();
+            appointmentList.get(1).setTime(DateUtil.getHoursplusOne(appointmentTime));
+        }
         appointmentRepository.saveAll(appointmentList);
 
         return appointment;
